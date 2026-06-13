@@ -1,0 +1,14 @@
+apiVersion: 1
+
+providers:
+  - name: mirai-gikai
+    orgId: 1
+    folder: みらい議会
+    type: file
+    disableDeletion: false
+    # UI からの編集を許可しつつ、ファイル側の更新も取り込む
+    allowUiUpdates: true
+    updateIntervalSeconds: 30
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

@@ -1,0 +1,298 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "title": "累計 AI コスト",
+      "type": "stat",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": { "unit": "currencyUSD", "decimals": 4 },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select coalesce(sum(cost_usd), 0) as \"累計コスト\" from chat_usage_events;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "当月 AI コスト",
+      "type": "stat",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "fieldConfig": {
+        "defaults": { "unit": "currencyUSD", "decimals": 4 },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select coalesce(sum(cost_usd), 0) as \"当月コスト\" from chat_usage_events where occurred_at >= date_trunc('month', now());",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "インタビュー完了率",
+      "type": "stat",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "fieldConfig": {
+        "defaults": { "unit": "percent", "decimals": 1, "min": 0, "max": 100 },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select case when count(*) = 0 then 0 else round(100.0 * count(completed_at) / count(*), 1) end as \"完了率\" from interview_sessions;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "公開レポート数",
+      "type": "stat",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "fieldConfig": {
+        "defaults": { "unit": "short", "decimals": 0 },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select count(*) as \"公開レポート数\" from interview_report where is_public_by_admin = true;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "日次 AI コスト (USD)",
+      "type": "timeseries",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1 }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "select date_trunc('day', occurred_at) as time, sum(cost_usd) as \"コスト(USD)\" from chat_usage_events group by 1 order by 1;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "モデル別コスト (日次)",
+      "type": "timeseries",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1, "stacking": { "mode": "normal" } }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "select date_trunc('day', occurred_at) as time, model as metric, sum(cost_usd) as value from chat_usage_events group by 1, 2 order by 1;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "日次インタビュー (開始 / 完了)",
+      "type": "timeseries",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "pointSize": 5 }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "select date_trunc('day', started_at) as time, count(*) as \"開始\", count(completed_at) as \"完了\" from interview_sessions group by 1 order by 1;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "スタンス分布",
+      "type": "piechart",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "fieldConfig": {
+        "defaults": { "unit": "short", "decimals": 0 },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "pieType": "pie",
+        "legend": { "displayMode": "list", "placement": "right", "showLegend": true, "values": ["value"] },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select count(*) filter (where stance = 'for') as \"賛成\", count(*) filter (where stance = 'against') as \"反対\", count(*) filter (where stance = 'neutral') as \"中立\" from interview_report;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "公開議案数の推移 (運用負荷プロキシ)",
+      "type": "timeseries",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 20 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1 }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "select date_trunc('day', coalesce(published_at, created_at)) as time, count(*) as \"公開議案数\" from bills where publish_status = 'published' group by 1 order by 1;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "インタビュー設定作成数 (運用負荷プロキシ)",
+      "type": "timeseries",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 20 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1 }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "select date_trunc('day', created_at) as time, count(*) as \"設定作成数\" from interview_configs group by 1 order by 1;",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": ["mirai-gikai", "poc", "saitama"],
+  "templating": { "list": [] },
+  "time": { "from": "now-90d", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "みらい議会＠さいたま PoC オーバービュー",
+  "uid": "mirai-poc-overview",
+  "version": 1,
+  "weekStart": ""
+}

@@ -1,0 +1,18 @@
+apiVersion: 1
+
+datasources:
+  - name: Supabase (mirai-gikai)
+    uid: mirai-supabase
+    type: postgres
+    access: proxy
+    url: ${MIRAI_DB_HOST}:${MIRAI_DB_PORT}
+    user: ${MIRAI_DB_USER}
+    database: ${MIRAI_DB_NAME}
+    isDefault: true
+    jsonData:
+      sslmode: disable
+      postgresVersion: 1700
+      timescaledb: false
+    secureJsonData:
+      password: ${MIRAI_DB_PASSWORD}
+    editable: true
