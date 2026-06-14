@@ -88,7 +88,7 @@ function _InterviewLPHero({
           </span>
         </div>
         <h1 className="text-2xl font-bold text-center leading-[1.5]">
-          法案についてのAIインタビュー
+          議案についてのAIインタビュー
         </h1>
         <Link href={billLink as Route}>
           <div className="inline-flex items-center justify-center gap-2.5 px-4 py-2 bg-white rounded-xl hover:bg-gray-50 transition-opacity cursor-pointer">
@@ -159,7 +159,7 @@ function _InterviewOverviewSection({
           について、AIがあなたの考えを深掘りするチャット型インタビューです
         </p>
         <p>
-          いただいたご意見は、政策研究やさいたま市議会での審議に活用し、みらい議会＠さいたま市上に公開される可能性があります。
+          いただいたご意見は、政策研究やさいたま市議会での審議に活用し、みらい議会＠さいたま市に公開される可能性があります。
         </p>
       </div>
       <div>
@@ -168,7 +168,7 @@ function _InterviewOverviewSection({
             variant="outline"
             className="w-full border border-black rounded-[100px] h-[48px] px-6 font-bold text-[15px] hover:opacity-90 transition-opacity flex items-center justify-center gap-4"
           >
-            <span>法案詳細はこちら</span>
+            <span>議案詳細はこちら</span>
             <ArrowRight className="size-4" />
           </Button>
         </Link>
@@ -297,7 +297,7 @@ function _InterviewFooterActions({
       <Link href={billLink as Route}>
         <Button variant="outline" className="w-full">
           <Undo2 className="size-5" />
-          <span>法案詳細に戻る</span>
+          <span>議案詳細に戻る</span>
         </Button>
       </Link>
     </div>

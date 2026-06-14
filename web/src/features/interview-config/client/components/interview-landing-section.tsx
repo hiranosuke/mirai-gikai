@@ -22,7 +22,7 @@ function _InterviewBadge() {
     <div className="flex">
       <div className="inline-flex items-center justify-center gap-2 px-3 py-1 bg-mirai-surface-tag rounded-2xl">
         <span className="text-[11px] font-medium text-black leading-[1.09]">
-          法案の当事者・有識者の方へ
+          議案の当事者・有識者の方へ
         </span>
       </div>
     </div>
@@ -86,7 +86,7 @@ export function InterviewLandingSection({
 
         <div className="space-y-2">
           <h2 className="text-lg font-bold leading-[1.67]">
-            本法案についてのご意見を
+            本議案についてのご意見を
             <br className="pc:hidden" />
             お聞かせください
           </h2>
