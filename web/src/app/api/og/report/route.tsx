@@ -172,7 +172,7 @@ export async function GET(request: Request) {
               maxHeight: OG_BILL_NAME_MAX_HEIGHT,
               fontSize: 32,
               fontWeight: 800,
-              color: "#0f8472",
+              color: "#20603a",
               lineHeight: 1.5,
               overflow: "hidden",
               wordBreak: "break-all",
