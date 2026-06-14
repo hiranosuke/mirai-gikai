@@ -36,16 +36,16 @@ export function ComingSoonSection({ bills }: ComingSoonSectionProps) {
         </div>
       )}
 
-      {/* さいたま市公式サイトへのリンク */}
+      {/* さいたま市議会公式サイトへのリンク */}
       <div className="text-right text-sm text-mirai-text-secondary">
         <Link
-          href="https://www.city.saitama.lg.jp/"
+          href="https://www.city.saitama.jp/gikai/index.html"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:opacity-80 inline-flex items-center gap-1"
         >
           さいたま市議会に提出されているすべての議案は{" "}
-          <span className="underline">さいたま市公式サイトへ</span>
+          <span className="underline">さいたま市議会公式サイトへ</span>
           <ExternalLink className="h-3 w-3" />
         </Link>
       </div>
