@@ -21,6 +21,7 @@ export function Footer() {
         <FooterLogoSection />
         <FooterPrimaryLinks />
         <FooterPolicies />
+        <FooterDisclaimer />
         <FooterCopyright />
       </div>
     </footer>
@@ -30,10 +31,14 @@ export function Footer() {
 function FooterLogoSection() {
   return (
     <div className="flex flex-col items-center text-center mb-9">
-      <Link href={routes.home()} aria-label="みらい議会 トップページ">
+      <Link
+        href={routes.home()}
+        aria-label="みらい議会＠さいたま市 トップページ"
+        className="inline-block rounded-2xl bg-white p-4 shadow-sm"
+      >
         <Image
           src="/img/logo.svg"
-          alt="みらい議会"
+          alt="みらい議会＠さいたま市"
           width={150}
           height={128}
           className="h-auto"
@@ -87,6 +92,27 @@ function FooterPolicies() {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function FooterDisclaimer() {
+  return (
+    <div className="mb-5 text-center text-[12px] leading-relaxed text-slate-800">
+      <p>
+        本サイトは、さいたま市の市政に関心を持つ有志が、公開されている情報をもとに作成・運営している非公式のサイトです。さいたま市（市役所）やさいたま市議会の下部組織・委託先ではなく、これらと公式な関係を持つものではありません。
+      </p>
+      <p className="mt-2">
+        これは政党チームみらいが運営しているものではありません
+      </p>
+      <Link
+        href={"https://gikai.team-mir.ai/" as Route}
+        target="_blank"
+        rel="noreferrer"
+        className="underline transition-colors hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+      >
+        本家「みらい議会」はこちら
+      </Link>
     </div>
   );
 }

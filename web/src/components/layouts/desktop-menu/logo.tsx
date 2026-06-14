@@ -41,7 +41,7 @@ export function DesktopMenuLogo() {
             lineHeight: "2em",
           }}
         >
-          国会の議論をわかりやすく
+          さいたま市議会の議論をわかりやすく
         </p>
       </div>
     </Link>

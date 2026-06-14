@@ -3,23 +3,23 @@ import { Container } from "@/components/layouts/container";
 
 export function Hero() {
   return (
-    <div className="relative w-full h-[80vh] min-h-[400px] md:h-[70vh]">
+    <div className="relative w-full h-[80vh] min-h-[400px] md:h-[70vh] overflow-hidden bg-gradient-to-b from-mirai-surface to-mirai-gradient-end">
+      {/* ワンポイント: さいたま市マスコット「つなが竜ヌゥ」（右下） */}
       <Image
-        src="/img/hero_background.png"
-        alt="国会議事堂"
-        fill
+        src="/img/nuu-onepoint.png"
+        alt="さいたま市マスコット つなが竜ヌゥ"
+        width={560}
+        height={583}
         priority
-        className="object-cover"
-        sizes="100vw"
-        quality={85}
+        className="pointer-events-none absolute bottom-0 right-3 h-auto w-32 sm:w-40 md:w-52"
       />
       <div className="absolute bottom-[30vh] left-0 right-0 py-4">
         <Container>
           <p className="font-bold text-xl md:text-2xl leading-relaxed">
-            いま国会で議論されていること <br />
+            いまさいたま市議会で議論されていること <br />
             やさしい言葉で説明します
           </p>
-          <p className="mt-2 font-lexend text-xs">powered by Team Mirai & AI</p>
+          <p className="mt-2 font-lexend text-xs">powered by AI</p>
         </Container>
       </div>
 

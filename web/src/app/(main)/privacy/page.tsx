@@ -8,8 +8,8 @@ import {
 } from "@/components/layouts/legal-page-layout";
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー | みらい議会",
-  description: "みらい議会のプライバシーポリシー",
+  title: "プライバシーポリシー | みらい議会＠さいたま市",
+  description: "みらい議会＠さいたま市のプライバシーポリシー",
 };
 
 export default function PrivacyPage() {

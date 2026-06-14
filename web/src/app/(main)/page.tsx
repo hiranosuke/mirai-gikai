@@ -2,7 +2,6 @@ import { Container } from "@/components/layouts/container";
 import { About } from "@/components/top/about";
 import { ComingSoonSection } from "@/components/top/coming-soon-section";
 import { Hero } from "@/components/top/hero";
-import { TeamMirai } from "@/components/top/team-mirai";
 import { getDifficultyLevel } from "@/features/bill-difficulty/server/loaders/get-difficulty-level";
 import { BillDisclaimer } from "@/features/bills/client/components/bill-detail/bill-disclaimer";
 import { BillsByTagSection } from "@/features/bills/server/components/bills-by-tag-section";
@@ -38,14 +37,14 @@ export default async function Home() {
     <>
       <Hero />
 
-      {/* 本日の国会セクション */}
+      {/* 本日のさいたま市議会セクション */}
       <CurrentDietSession session={currentSession} />
 
       {/* 議案一覧セクション */}
       <Container className="">
         <div className="py-10">
           <main className="flex flex-col gap-16">
-            {/* 注目の法案セクション */}
+            {/* 注目の議案セクション */}
             <FeaturedBillSection bills={featuredBills} />
 
             {/* タグ別議案一覧セクション */}
@@ -57,7 +56,7 @@ export default async function Home() {
         </div>
       </Container>
 
-      {/* 前回の国会セクション（Archive） */}
+      {/* 前回の定例会セクション（Archive） */}
       {previousSessionData && (
         <div className="bg-mirai-surface-muted py-10">
           <Container>
@@ -73,9 +72,6 @@ export default async function Home() {
       <Container>
         {/* みらい議会とは セクション */}
         <About />
-
-        {/* チームみらいについて セクション */}
-        <TeamMirai />
 
         {/* 免責事項 */}
         <BillDisclaimer />

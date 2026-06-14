@@ -75,7 +75,7 @@ export function BillListWithStatusFilter({ bills }: Props) {
       {/* 法案リスト */}
       {filteredBills.length === 0 ? (
         <p className="text-center py-12 text-muted-foreground">
-          該当する法案がありません
+          該当する議案がありません
         </p>
       ) : (
         <div className="flex flex-col gap-3">
