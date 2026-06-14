@@ -100,7 +100,7 @@ function FooterDisclaimer() {
         href={"https://gikai.team-mir.ai/" as Route}
         target="_blank"
         rel="noreferrer"
-        className="underline transition-colors hover:text-slate-900"
+        className="underline transition-colors hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
       >
         本家「みらい議会」はこちら
       </Link>
