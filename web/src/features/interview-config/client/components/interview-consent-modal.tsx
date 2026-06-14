@@ -59,7 +59,7 @@ export function InterviewConsentModal({
 
         <div className="flex flex-col gap-6 mt-6">
           <ul className="flex flex-col gap-3 list-disc pl-5 text-sm font-bold text-gray-800 leading-[22px]">
-            <li>回答データは党内での政策検討に利用します。</li>
+            <li>回答データは議案の論点整理や分析に利用します。</li>
             <li>個人情報や機密情報の記載はお控えください。</li>
             <li>
               インタビュー回答後に公開を許可するかを選択できます。公開を許可した場合、のちにみらい議会に全文が掲載される場合があります。

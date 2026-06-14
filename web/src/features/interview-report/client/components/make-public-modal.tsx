@@ -58,7 +58,7 @@ export function MakePublicModal({
             さまざまな意見が公開されることで、より深い議案議論が実現できます。
           </CheckListItem>
           <p className="text-sm text-black">
-            非公開で提出した場合でも、ご意見は党内での政策検討に活用させていただきます。
+            非公開で提出した場合でも、ご意見は議案の論点整理や分析に活用させていただきます。
           </p>
         </div>
 
