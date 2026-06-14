@@ -3,9 +3,9 @@ import { getCardStatusLabel, getStatusVariant } from "./bill-status";
 
 describe("getCardStatusLabel", () => {
   it.each([
-    ["introduced", "国会審議中"],
-    ["in_originating_house", "国会審議中"],
-    ["in_receiving_house", "国会審議中"],
+    ["introduced", "市議会審議中"],
+    ["in_originating_house", "市議会審議中"],
+    ["in_receiving_house", "市議会審議中"],
   ] as const)("審議中ステータス %s → %s", (status, expected) => {
     expect(getCardStatusLabel(status)).toBe(expected);
   });
