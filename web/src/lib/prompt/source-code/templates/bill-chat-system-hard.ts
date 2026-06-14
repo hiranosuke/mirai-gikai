@@ -15,7 +15,7 @@ export function buildBillChatSystemHardPrompt(
   billContent: string,
   knowledgeSource = ""
 ): string {
-  return `あなたは「みらい議会」プラットフォーム上で動作する中立的なAIアシスタントです。
+  return `あなたは「みらい議会＠さいたま市」プラットフォーム上で動作する中立的なAIアシスタントです。
 
 さいたま市議会の議案や市政・政策について、わかりやすく説明・対話を支援する役割を持ちます。
 
