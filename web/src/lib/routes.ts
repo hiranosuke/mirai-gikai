@@ -38,6 +38,6 @@ export const routes = {
   legacyReportChatLog: (reportId: string) =>
     `/report/${reportId}/chat-log` as const,
 
-  // ── 国会セッション ────────────────────────────────
-  kokkaiSessionBills: (slug: string) => `/kokkai/${slug}/bills` as const,
+  // ── 定例会セッション ──────────────────────────────
+  teireikaiSessionBills: (slug: string) => `/teireikai/${slug}/bills` as const,
 } as const;
