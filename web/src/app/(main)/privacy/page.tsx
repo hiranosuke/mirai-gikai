@@ -113,9 +113,8 @@ export default function PrivacyPage() {
         <section className="space-y-4">
           <LegalSectionTitle>8. お問い合わせ窓口</LegalSectionTitle>
           <LegalParagraph>
-            個人情報の確認・修正・削除、またはみらい議会AIインタビュー機能の回答公開に関する取り消し等のご相談は、下記までご連絡ください。
+            個人情報の確認・修正・削除、またはみらい議会AIインタビュー機能の回答公開に関する取り消し等のご相談は、本サイトの開発者までお問い合わせください。
           </LegalParagraph>
-          <LegalParagraph>support@team-mir.ai</LegalParagraph>
         </section>
       </Container>
     </LegalPageLayout>
