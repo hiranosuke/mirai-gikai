@@ -43,7 +43,7 @@ const FEATURES: {
   {
     iconSrc: "/icons/interview-landmark.svg",
     iconSize: { w: 30, h: 29 },
-    text: "ご意見はチームみらいを通じて国会に届けられる可能性があります",
+    text: "ご意見はさいたま市議会に届けられる可能性があります",
   },
 ];
 
@@ -149,7 +149,7 @@ function _InterviewOverviewSection({
       </h2>
       <div className="space-y-4 text-[15px] font-normal text-black leading-[1.87]">
         <p>
-          国会で検討されている
+          さいたま市議会で検討されている
           <Link
             href={billLink as Route}
             className="text-primary underline underline-offset-2 hover:opacity-70 transition-opacity"
@@ -159,7 +159,7 @@ function _InterviewOverviewSection({
           について、AIがあなたの考えを深掘りするチャット型インタビューです
         </p>
         <p>
-          いただいたご意見は、政策研究や国会での審議に活用し、みらい議会上に公開される可能性があります。
+          いただいたご意見は、政策研究やさいたま市議会での審議に活用し、みらい議会＠さいたま市上に公開される可能性があります。
         </p>
       </div>
       <div>

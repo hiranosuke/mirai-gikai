@@ -48,7 +48,7 @@ export function PreviousSessionSection({
           />
         </h2>
         <p className="text-sm font-bold text-primary-accent">
-          過去の国会に提出された法案
+          過去の定例会に提出された議案
         </p>
       </div>
 
