@@ -21,6 +21,7 @@ export function Footer() {
         <FooterLogoSection />
         <FooterPrimaryLinks />
         <FooterPolicies />
+        <FooterDisclaimer />
         <FooterCopyright />
       </div>
     </footer>
@@ -87,6 +88,22 @@ function FooterPolicies() {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function FooterDisclaimer() {
+  return (
+    <div className="mb-5 text-center text-[12px] leading-relaxed text-slate-800">
+      <p>これは政党チームみらいが運営しているものではありません</p>
+      <Link
+        href={"https://gikai.team-mir.ai/" as Route}
+        target="_blank"
+        rel="noreferrer"
+        className="underline transition-colors hover:text-slate-900"
+      >
+        本家「みらい議会」はこちら
+      </Link>
     </div>
   );
 }
