@@ -34,7 +34,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(env.webUrl),
   title: siteTitle,
   description: siteDescription,
-  keywords: [siteName, "さいたま市", "さいたま市議会", "議案", "市政", "政策", "解説"],
+  keywords: [
+    siteName,
+    "さいたま市",
+    "さいたま市議会",
+    "議案",
+    "市政",
+    "政策",
+    "解説",
+  ],
   icons: {
     icon: isDev
       ? "/icons/pwa/icon_dev_192_v3.png"

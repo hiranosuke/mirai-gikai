@@ -207,7 +207,9 @@ export function DietSessionItem({ session }: DietSessionItemProps) {
             <div className="text-sm text-gray-500">
               {session.slug && (
                 <Link
-                  href={`${env.webUrl}/teireikai/${session.slug}/bills` as Route}
+                  href={
+                    `${env.webUrl}/teireikai/${session.slug}/bills` as Route
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mr-2 text-blue-600 hover:underline"
