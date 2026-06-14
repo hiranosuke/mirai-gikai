@@ -31,10 +31,14 @@ export function Footer() {
 function FooterLogoSection() {
   return (
     <div className="flex flex-col items-center text-center mb-9">
-      <Link href={routes.home()} aria-label="みらい議会 トップページ">
+      <Link
+        href={routes.home()}
+        aria-label="みらい議会＠さいたま市 トップページ"
+        className="inline-block rounded-2xl bg-white p-4 shadow-sm"
+      >
         <Image
           src="/img/logo.svg"
-          alt="みらい議会"
+          alt="みらい議会＠さいたま市"
           width={150}
           height={128}
           className="h-auto"
