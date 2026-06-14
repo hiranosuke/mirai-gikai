@@ -38,7 +38,7 @@ const FEATURES: {
   {
     iconSrc: "/icons/interview-messages.svg",
     iconSize: { w: 33, h: 26 },
-    text: "寄せられた回答はチームみらいの政策検討に活用します",
+    text: "寄せられた回答はさいたま市議会の政策検討に活用します",
   },
   {
     iconSrc: "/icons/interview-landmark.svg",
