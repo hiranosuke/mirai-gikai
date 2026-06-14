@@ -452,6 +452,59 @@ git commit -m "コピー: 利用規約の国会用語をさいたま市議会へ
 
 ---
 
+## Task 9.5: ページtitleメタデータ + OG画像のブランド整合（レビュー指摘の追加分）
+
+サービス名一貫性（FORK要件1）。各ページの `<title>` メタデータと report共有OG画像のチームみらい/旧teal残存を是正する。
+**本文プローズ中の「みらい議会」短縮名は据え置く**（ユーザー判断「タイトル＋ブランドだけ」）。
+
+**Files:**
+- Modify: `web/src/app/(main)/privacy/page.tsx:11-12`
+- Modify: `web/src/app/(main)/terms/page.tsx:12-13`
+- Modify: `web/src/app/(main)/teireikai/[slug]/bills/page.tsx:24`（Task 3 でリネーム済みのディレクトリ）
+- Modify: `web/src/app/api/og/report/route.tsx:201,212,220`
+- Modify: `web/src/features/bills/client/components/bill-detail/mirai-stance-card.tsx:31,35`
+
+- [ ] **Step 1: privacy/terms のメタデータ**
+- privacy/page.tsx:11 `title: "プライバシーポリシー | みらい議会",` → `title: "プライバシーポリシー | みらい議会＠さいたま市",`
+- privacy/page.tsx:12 `description: "みらい議会のプライバシーポリシー",` → `description: "みらい議会＠さいたま市のプライバシーポリシー",`
+- terms/page.tsx:12 `title: "利用規約 | みらい議会",` → `title: "利用規約 | みらい議会＠さいたま市",`
+- terms/page.tsx:13 `description: "みらい議会の利用規約",` → `description: "みらい議会＠さいたま市の利用規約",`
+
+- [ ] **Step 2: teireikai ページのタイトル（法案→議案 ＋ サービス名）**
+- teireikai/[slug]/bills/page.tsx:24 `title: \`${session.name}の法案一覧 | みらい議会\`,` → `title: \`${session.name}の議案一覧 | みらい議会＠さいたま市\`,`
+- 同ファイルに L20 `return { title: "国会会期が見つかりません" };` があれば → `return { title: "定例会が見つかりません" };`
+
+- [ ] **Step 3: OG report 画像のブランド整合**
+
+`web/src/app/api/og/report/route.tsx`:
+- L201 旧tealグラデを新緑へ: `"linear-gradient(-30deg, rgb(188, 236, 211) 1%, rgb(100, 216, 198) 99%)"` → `"linear-gradient(-30deg, rgb(195, 232, 207) 1%, rgb(92, 191, 142) 99%)"`（= #c3e8cf / #5cbf8e）
+- L212 バッジ `みらい議会` → `みらい議会＠さいたま市`
+- L220 `alt="チームみらいロゴ"` → `alt="さいたま市民マーク"`
+（ロゴ画像は `public/img/ogp-logo.png` から読込。Task 4 で市民マークに差替済みのため src 変更は不要）
+
+- [ ] **Step 4: mirai-stance-card の alt/コメント**
+
+`web/src/features/bills/client/components/bill-detail/mirai-stance-card.tsx`:
+- L31 コメント `{/* チームみらいロゴ */}` → `{/* さいたま市民マーク */}`
+- L35 `alt="チームみらい"` → `alt="さいたま市民マーク"`
+（src `/img/logo.svg` は Task 4 で市民マークに差替済み）
+
+- [ ] **Step 5: 検証**
+
+Run: `corepack pnpm --filter web typecheck`
+Expected: PASS
+
+Run: `grep -rn "チームみらいロゴ\|alt=\"チームみらい\"" web/src`
+Expected: 出力なし
+
+- [ ] **Step 6: コミット**
+```bash
+git add web/src/app/(main)/privacy web/src/app/(main)/terms "web/src/app/(main)/teireikai" web/src/app/api/og/report/route.tsx web/src/features/bills/client/components/bill-detail/mirai-stance-card.tsx
+git commit -m "ブランド: ページtitleメタデータとOG画像をみらい議会＠さいたま市へ整合" -m "Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
+```
+
+---
+
 ## Task 10: 最終検証
 
 - [ ] **Step 1: 残存用語の確認（task3送り以外が残っていないこと）**
