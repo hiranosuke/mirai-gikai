@@ -99,7 +99,12 @@ function FooterPolicies() {
 function FooterDisclaimer() {
   return (
     <div className="mb-5 text-center text-[12px] leading-relaxed text-slate-800">
-      <p>これは政党チームみらいが運営しているものではありません</p>
+      <p>
+        本サイトは、さいたま市の市政に関心を持つ有志が、公開されている情報をもとに作成・運営している非公式のサイトです。さいたま市（市役所）やさいたま市議会の下部組織・委託先ではなく、これらと公式な関係を持つものではありません。
+      </p>
+      <p className="mt-2">
+        これは政党チームみらいが運営しているものではありません
+      </p>
       <Link
         href={"https://gikai.team-mir.ai/" as Route}
         target="_blank"
