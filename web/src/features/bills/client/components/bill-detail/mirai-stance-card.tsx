@@ -28,11 +28,11 @@ export function MiraiStanceCard({ stance, billStatus }: MiraiStanceCardProps) {
           <div className="flex flex-col gap-8">
             {/* ヘッダー部分：ロゴとスタンスバッジ */}
             <div className="flex flex-col items-center gap-8">
-              {/* チームみらいロゴ */}
+              {/* さいたま市民マーク */}
               <div className="relative w-37 h-31">
                 <Image
                   src="/img/logo.svg"
-                  alt="チームみらい"
+                  alt="さいたま市民マーク"
                   fill
                   className="object-contain"
                 />

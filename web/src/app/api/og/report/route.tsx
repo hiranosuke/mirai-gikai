@@ -132,7 +132,7 @@ export async function GET(request: Request) {
           height: 560,
           borderRadius: 30,
           backgroundImage:
-            "linear-gradient(-30deg, rgb(188, 236, 211) 1%, rgb(100, 216, 198) 99%)",
+            "linear-gradient(-30deg, rgb(195, 232, 207) 1%, rgb(92, 191, 142) 99%)",
           padding: 6,
           position: "relative",
         }}
@@ -198,7 +198,7 @@ export async function GET(request: Request) {
             borderBottomLeftRadius: 30,
             borderTopRightRadius: 30,
             backgroundImage:
-              "linear-gradient(-30deg, rgb(188, 236, 211) 1%, rgb(100, 216, 198) 99%)",
+              "linear-gradient(-30deg, rgb(195, 232, 207) 1%, rgb(92, 191, 142) 99%)",
           }}
         >
           <span
@@ -209,7 +209,7 @@ export async function GET(request: Request) {
               letterSpacing: "0.03em",
             }}
           >
-            みらい議会
+            みらい議会＠さいたま市
           </span>
         </div>
 
@@ -217,7 +217,7 @@ export async function GET(request: Request) {
         {logoDataUrl && (
           // biome-ignore lint/performance/noImgElement: ignore
           <img
-            alt="チームみらいロゴ"
+            alt="さいたま市民マーク"
             src={logoDataUrl}
             width={189}
             height={160}

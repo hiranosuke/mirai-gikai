@@ -9,8 +9,8 @@ import {
 import { Container } from "@/components/layouts/container";
 
 export const metadata: Metadata = {
-  title: "利用規約 | みらい議会",
-  description: "みらい議会の利用規約",
+  title: "利用規約 | みらい議会＠さいたま市",
+  description: "みらい議会＠さいたま市の利用規約",
 };
 
 export default function TermsPage() {
