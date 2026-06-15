@@ -5,16 +5,16 @@ export function Hero() {
   return (
     <div className="relative w-full h-[80vh] min-h-[400px] md:h-[70vh] overflow-hidden bg-gradient-to-b from-mirai-surface to-mirai-gradient-end">
       {/* ワンポイント: さいたま市マスコット「つなが竜ヌゥ」（右下） */}
-      <div className="pointer-events-none absolute bottom-1 right-3 flex flex-col items-end">
+      <div className="pointer-events-none absolute bottom-1 right-3 flex w-32 flex-col items-center sm:w-40 md:w-52">
         <Image
           src="/img/nuu-onepoint.png"
           alt="さいたま市 PRキャラクター つなが竜 ヌゥ"
           width={560}
           height={583}
           priority
-          className="h-auto w-32 sm:w-40 md:w-52"
+          className="h-auto w-full"
         />
-        <p className="mt-1 text-right text-[10px] leading-tight text-black/70">
+        <p className="mt-1 w-full text-center text-[10px] leading-tight text-black/70">
           さいたま市 PRキャラクター つなが竜 ヌゥ
         </p>
       </div>
