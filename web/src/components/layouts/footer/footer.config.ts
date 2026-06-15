@@ -18,11 +18,6 @@ export const primaryLinks: FooterLink[] = [
     label: "TOP",
     href: routes.home(),
   },
-  {
-    label: "みらい議会＠さいたま市とは",
-    href: EXTERNAL_LINKS.ABOUT_NOTE,
-    external: true,
-  },
 ];
 
 export const policyLinks: FooterPolicyLink[] = [
