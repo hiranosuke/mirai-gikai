@@ -30,18 +30,10 @@ export function HeaderClient({ difficultyLevel }: HeaderClientProps) {
               className="flex items-center space-x-2"
               aria-label="ホーム"
             >
-              <Image
-                src="/img/logo.svg"
-                alt="みらい議会"
-                width={42}
-                height={36}
-              />
-              <Image
-                src="/img/service-logo.svg"
-                alt="みらい議会"
-                width={115}
-                height={21}
-              />
+              <Image src="/img/logo.svg" alt="" width={42} height={36} />
+              <span className="text-base font-bold leading-none text-black sm:text-lg">
+                みらい議会＠さいたま市
+              </span>
             </Link>
           </div>
 

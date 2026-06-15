@@ -38,12 +38,12 @@ const FEATURES: {
   {
     iconSrc: "/icons/interview-messages.svg",
     iconSize: { w: 33, h: 26 },
-    text: "寄せられた回答はさいたま市議会の政策検討に活用します",
+    text: "寄せられた回答は議案の論点整理や分析に活用します",
   },
   {
     iconSrc: "/icons/interview-landmark.svg",
     iconSize: { w: 30, h: 29 },
-    text: "ご意見はさいたま市議会に届けられる可能性があります",
+    text: "ご意見はみらい議会＠さいたま市で公開・共有される可能性があります",
   },
 ];
 
@@ -159,7 +159,7 @@ function _InterviewOverviewSection({
           について、AIがあなたの考えを深掘りするチャット型インタビューです
         </p>
         <p>
-          いただいたご意見は、政策研究やさいたま市議会での審議に活用し、みらい議会＠さいたま市に公開される可能性があります。
+          いただいたご意見は、議案の論点整理やAIによる分析に活用し、みらい議会＠さいたま市に公開される可能性があります。
         </p>
       </div>
       <div>

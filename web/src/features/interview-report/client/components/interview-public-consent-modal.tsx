@@ -61,7 +61,7 @@ export function InterviewPublicConsentModal({
 
           <div className="space-y-4">
             <CheckListItem>
-              公開を許可した場合、今後みらい議会にあなたのご意見の要約とインタビュー原文が匿名で掲載されることがあります。
+              公開を許可した場合、今後みらい議会＠さいたま市にあなたのご意見の要約とインタビュー原文が匿名で掲載されることがあります。
             </CheckListItem>
             <CheckListItem>
               さまざまな意見が公開されることで、より深い議案議論が実現できます。
@@ -69,7 +69,7 @@ export function InterviewPublicConsentModal({
           </div>
 
           <p className="text-sm text-black">
-            非公開で提出した場合でも、ご意見は党内での政策検討に活用させていただきます。
+            非公開で提出した場合でも、ご意見は議案の論点整理や分析に活用させていただきます。
           </p>
         </div>
 

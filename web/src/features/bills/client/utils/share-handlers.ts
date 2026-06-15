@@ -31,7 +31,7 @@ export async function shareNative(message: string, url: string) {
   if (navigator.share) {
     try {
       await navigator.share({
-        title: "みらい議会",
+        title: "みらい議会＠さいたま市",
         text: message,
         url: url,
       });

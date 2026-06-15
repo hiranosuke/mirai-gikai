@@ -16,7 +16,7 @@ export function DesktopMenuActionButtons() {
           height: 20,
         }}
       >
-        みらい議会とは
+        みらい議会＠さいたま市とは
       </LinkButton>
 
       <LinkButton

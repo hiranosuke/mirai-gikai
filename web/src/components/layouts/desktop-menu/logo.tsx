@@ -15,7 +15,7 @@ export function DesktopMenuLogo() {
       <div className="relative w-[116px] h-[98.38px]">
         <Image
           src="/img/logo.svg"
-          alt="みらい議会ロゴ"
+          alt="みらい議会＠さいたま市ロゴ"
           fill
           className="object-contain"
           priority
@@ -32,7 +32,7 @@ export function DesktopMenuLogo() {
             letterSpacing: "0.1em",
           }}
         >
-          みらい議会
+          みらい議会＠さいたま市
         </h1>
         <p
           className="font-bold text-black"

@@ -18,7 +18,7 @@ export function About() {
             />
           </h2>
           <p className="text-sm font-bold text-primary-accent">
-            みらい議会とは
+            みらい議会＠さいたま市とは
           </p>
         </div>
 
@@ -45,7 +45,7 @@ export function About() {
               height: 25,
             }}
           >
-            みらい議会とは
+            みらい議会＠さいたま市とは
           </LinkButton>
         </div>
       </div>
