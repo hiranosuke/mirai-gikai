@@ -15,6 +15,20 @@ export const metadata: Metadata = {
     "みらい議会＠さいたま市の目的と、本家「みらい議会」・チームみらいとの関係についてご説明します。",
 };
 
+function ExternalAnchor({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-1 text-primary-accent underline-offset-2 hover:underline"
+    >
+      {label}
+      <ExternalLink className="size-3.5" aria-hidden />
+    </a>
+  );
+}
+
 const relatedLinks = [
   {
     id: "team-mirai-note",
@@ -75,18 +89,28 @@ export default function AboutPage() {
           <LegalList
             items={relatedLinks.map((link) => ({
               id: link.id,
-              content: (
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-primary-accent underline-offset-2 hover:underline"
-                >
-                  {link.label}
-                  <ExternalLink className="size-3.5" aria-hidden />
-                </a>
-              ),
+              content: <ExternalAnchor href={link.href} label={link.label} />,
             }))}
+          />
+        </section>
+
+        <section className="space-y-4">
+          <LegalSectionTitle>運営について</LegalSectionTitle>
+          <LegalParagraph>
+            本サイトは、さいたま市政に関心を持つ一個人（有志）が運営しています。本サイトのソースコードは、本家「みらい議会」と同じくオープンソース（AGPL-3.0）として公開しています。
+          </LegalParagraph>
+          <LegalList
+            items={[
+              {
+                id: "source-code",
+                content: (
+                  <ExternalAnchor
+                    href={EXTERNAL_LINKS.SOURCE_CODE}
+                    label="ソースコード（GitHub）"
+                  />
+                ),
+              },
+            ]}
           />
         </section>
       </Container>
