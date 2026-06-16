@@ -1,4 +1,7 @@
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { routes } from "@/lib/routes";
 
 export function About() {
   return (
@@ -30,6 +33,16 @@ export function About() {
           <p className="text-[15px] leading-[28px] text-black">
             みらい議会＠さいたま市は、さいたま市議会で今どんな議案が審議されているか、わかりやすく伝えるプラットフォームです。市民の意見を市政に届けることを目指して、継続的にアップデートしていきます。
           </p>
+          <p className="text-[15px] leading-[28px] text-black">
+            なお本サイトは、政党チームみらいが公開するオープンソースを活用した非公式のサイトです。チームみらいを応援することを目的とするものではなく、さいたま市政の可視化を独立した立場で目指しています。
+          </p>
+          <Link
+            href={routes.about()}
+            className="inline-flex items-center gap-1 text-sm font-bold text-primary-accent hover:underline"
+          >
+            このサイトについて
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
         </div>
       </div>
     </div>
