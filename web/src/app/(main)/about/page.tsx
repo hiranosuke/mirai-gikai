@@ -95,9 +95,12 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-4">
-          <LegalSectionTitle>運営について</LegalSectionTitle>
+          <LegalSectionTitle>運営とお問い合わせ</LegalSectionTitle>
           <LegalParagraph>
             本サイトは、さいたま市政に関心を持つ一個人（有志）が運営しています。本サイトのソースコードは、本家「みらい議会」と同じくオープンソース（AGPL-3.0）として公開しています。
+          </LegalParagraph>
+          <LegalParagraph>
+            ご意見・お問い合わせは、X（@riku_labs）のダイレクトメッセージよりお気軽にお寄せください。
           </LegalParagraph>
           <LegalList
             items={[
@@ -107,6 +110,15 @@ export default function AboutPage() {
                   <ExternalAnchor
                     href={EXTERNAL_LINKS.SOURCE_CODE}
                     label="ソースコード（GitHub）"
+                  />
+                ),
+              },
+              {
+                id: "contact-x",
+                content: (
+                  <ExternalAnchor
+                    href={EXTERNAL_LINKS.CONTACT_X}
+                    label="お問い合わせ（X: @riku_labs）"
                   />
                 ),
               },
