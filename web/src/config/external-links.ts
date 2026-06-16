@@ -9,5 +9,5 @@ export const EXTERNAL_LINKS = {
   TEAM_MIRAI_NOTE: "https://note.com/team_mirai_jp",
   TEAM_MIRAI_OFFICIAL: "https://team-mir.ai",
   // 本サイトのソースコード（AGPL-3.0 に基づき公開）
-  SOURCE_CODE: "https://github.com/hiranosuke/mirai-gikai",
+  SOURCE_CODE: "https://github.com/riku-labs/mirai-gikai-saitama-city",
 } as const;
