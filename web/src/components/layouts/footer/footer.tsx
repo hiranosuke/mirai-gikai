@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { EXTERNAL_LINKS } from "@/config/external-links";
 import { isInterviewPage } from "@/lib/page-layout-utils";
 import { routes } from "@/lib/routes";
 import { policyLinks, primaryLinks } from "./footer.config";
@@ -106,7 +107,7 @@ function FooterDisclaimer() {
         これは政党チームみらいが運営しているものではありません
       </p>
       <Link
-        href={"https://gikai.team-mir.ai/" as Route}
+        href={EXTERNAL_LINKS.MIRAI_GIKAI_HONKE as Route}
         target="_blank"
         rel="noreferrer"
         className="underline transition-colors hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"

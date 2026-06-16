@@ -18,6 +18,10 @@ export const primaryLinks: FooterLink[] = [
     label: "TOP",
     href: routes.home(),
   },
+  {
+    label: "このサイトについて",
+    href: routes.about(),
+  },
 ];
 
 export const policyLinks: FooterPolicyLink[] = [
