@@ -10,4 +10,6 @@ export const EXTERNAL_LINKS = {
   TEAM_MIRAI_OFFICIAL: "https://team-mir.ai",
   // 本サイトのソースコード（AGPL-3.0 に基づき公開）
   SOURCE_CODE: "https://github.com/riku-labs/mirai-gikai-saitama-city",
+  // お問い合わせ窓口（X）
+  CONTACT_X: "https://x.com/riku_labs",
 } as const;
