@@ -31,8 +31,10 @@ describe("createOpsActivityLogSchema", () => {
   });
   it("occurred_on の形式違反を弾く", () => {
     expect(
-      createOpsActivityLogSchema.safeParse({ ...valid, occurred_on: "2026/06/18" })
-        .success
+      createOpsActivityLogSchema.safeParse({
+        ...valid,
+        occurred_on: "2026/06/18",
+      }).success
     ).toBe(false);
   });
   it("bill_id が UUID 文字列を受け入れる", () => {

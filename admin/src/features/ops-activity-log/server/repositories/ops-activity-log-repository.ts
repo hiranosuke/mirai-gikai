@@ -89,7 +89,10 @@ export async function createOpsActivityLogRecord(
 
   if (error) {
     if (error.code === "23514" || error.code === "23503") {
-      return { data: null, error: { code: error.code, message: error.message } };
+      return {
+        data: null,
+        error: { code: error.code, message: error.message },
+      };
     }
     throw new Error(`作業ログの作成に失敗しました: ${error.message}`);
   }

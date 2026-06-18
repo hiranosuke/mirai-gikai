@@ -38,8 +38,20 @@ describe("groupLogsByBill", () => {
 
   it("bill_id が null の作業は1グループにまとめる", () => {
     const items: OpsActivityLogListItem[] = [
-      item({ id: "1", bill_id: null, bill_name: null, activity_type: "other", minutes: 15 }),
-      item({ id: "2", bill_id: "bill-1", bill_name: "議案A", activity_type: "content", minutes: 40 }),
+      item({
+        id: "1",
+        bill_id: null,
+        bill_name: null,
+        activity_type: "other",
+        minutes: 15,
+      }),
+      item({
+        id: "2",
+        bill_id: "bill-1",
+        bill_name: "議案A",
+        activity_type: "content",
+        minutes: 40,
+      }),
     ];
 
     const groups = groupLogsByBill(items);
@@ -51,8 +63,20 @@ describe("groupLogsByBill", () => {
 
   it("合計分の降順で並ぶ", () => {
     const items: OpsActivityLogListItem[] = [
-      item({ id: "1", bill_id: "a", bill_name: "A", activity_type: "content", minutes: 10 }),
-      item({ id: "2", bill_id: "b", bill_name: "B", activity_type: "content", minutes: 50 }),
+      item({
+        id: "1",
+        bill_id: "a",
+        bill_name: "A",
+        activity_type: "content",
+        minutes: 10,
+      }),
+      item({
+        id: "2",
+        bill_id: "b",
+        bill_name: "B",
+        activity_type: "content",
+        minutes: 50,
+      }),
     ];
 
     const groups = groupLogsByBill(items);
