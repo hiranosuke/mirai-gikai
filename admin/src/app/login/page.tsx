@@ -21,7 +21,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-muted-foreground">
-              © 2025 チームみらい. All rights reserved.
+              © 2025 riku-labs. All rights reserved.
             </p>
           </div>
         </CardContent>
