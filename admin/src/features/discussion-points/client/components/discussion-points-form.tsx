@@ -57,7 +57,9 @@ export function DiscussionPointsForm({
 
       if (result.success) {
         toast.success(
-          discussionPoints ? "論点整理を更新しました" : "論点整理を作成しました"
+          discussionPoints
+            ? "考えるヒントを更新しました"
+            : "考えるヒントを作成しました"
         );
         router.refresh();
       } else {
@@ -74,7 +76,7 @@ export function DiscussionPointsForm({
   const handleDelete = async () => {
     if (
       !discussionPoints ||
-      !confirm("この論点整理を削除してもよろしいですか？")
+      !confirm("この考えるヒントを削除してもよろしいですか？")
     ) {
       return;
     }
@@ -84,7 +86,7 @@ export function DiscussionPointsForm({
       const result = await deleteDiscussionPoints(discussionPoints.id);
 
       if (result.success) {
-        toast.success("論点整理を削除しました");
+        toast.success("考えるヒントを削除しました");
         window.location.reload();
       } else {
         toast.error(result.error || "削除に失敗しました");
@@ -100,9 +102,9 @@ export function DiscussionPointsForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>論点整理</CardTitle>
+        <CardTitle>考えるヒント</CardTitle>
         <p className="text-sm text-muted-foreground">
-          賛成・反対それぞれの論拠を中立に併記します。特定の立場を推奨する内容にはしないでください。
+          賛成・反対それぞれの理由を中立に併記します。特定の立場を推奨する内容にはしないでください。
         </p>
       </CardHeader>
       <CardContent>
@@ -116,10 +118,10 @@ export function DiscussionPointsForm({
               name="pro_points"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>賛成の論拠（任意）</FormLabel>
+                  <FormLabel>賛成する理由（任意）</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="賛成側の主な論拠を入力"
+                      placeholder="賛成する理由を入力"
                       className="min-h-[120px] resize-y"
                       {...field}
                     />
@@ -134,10 +136,10 @@ export function DiscussionPointsForm({
               name="con_points"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>反対の論拠（任意）</FormLabel>
+                  <FormLabel>反対する理由（任意）</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="反対側の主な論拠を入力"
+                      placeholder="反対する理由を入力"
                       className="min-h-[120px] resize-y"
                       {...field}
                     />
