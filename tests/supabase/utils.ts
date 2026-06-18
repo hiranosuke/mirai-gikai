@@ -270,8 +270,7 @@ export async function createTestDiscussionPoints(
     .insert(defaults)
     .select()
     .single();
-  if (error)
-    throw new Error(`discussion_points 作成失敗: ${error.message}`);
+  if (error) throw new Error(`discussion_points 作成失敗: ${error.message}`);
   return data;
 }
 
