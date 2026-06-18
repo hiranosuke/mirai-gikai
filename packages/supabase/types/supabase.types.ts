@@ -1,6 +1,3 @@
-WARN: environment variable is unset: SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID
-WARN: environment variable is unset: SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET
-Connecting to db 5432
 export type Json =
   | string
   | number
@@ -1518,5 +1515,3 @@ export const Constants = {
   },
 } as const
 
-A new version of Supabase CLI is available: v2.107.0 (currently installed v2.105.0)
-We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
