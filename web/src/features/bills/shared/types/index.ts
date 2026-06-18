@@ -11,12 +11,12 @@ export type BillContentInsert =
 export type BillContentUpdate =
   Database["public"]["Tables"]["bill_contents"]["Update"];
 
-export type MiraiStance = Database["public"]["Tables"]["mirai_stances"]["Row"];
+export type DiscussionPoints =
+  Database["public"]["Tables"]["discussion_points"]["Row"];
 
 // Enums
 export type HouseEnum = Database["public"]["Enums"]["house_enum"];
 export type BillStatusEnum = Database["public"]["Enums"]["bill_status_enum"];
-export type StanceTypeEnum = Database["public"]["Enums"]["stance_type_enum"];
 
 // 公開ステータス型（議案の公開/非公開を管理）
 export type BillPublishStatus = "draft" | "published" | "coming_soon";
@@ -31,8 +31,8 @@ export type ComingSoonBill = {
 };
 
 // Combined types for UI
-export type BillWithStance = Bill & {
-  mirai_stance?: MiraiStance;
+export type BillWithDiscussionPoints = Bill & {
+  discussion_points?: DiscussionPoints;
 };
 
 export type BillTag = {
@@ -48,7 +48,7 @@ export type FeaturedTag = {
 
 export type BillWithContent = Bill & {
   bill_content?: BillContent;
-  mirai_stance?: MiraiStance;
+  discussion_points?: DiscussionPoints;
   tags: BillTag[];
   featured_tag?: FeaturedTag;
   hasPublicInterview?: boolean;
@@ -105,13 +105,3 @@ export function getBillStatusLabel(
       return status; // 未知のステータスはそのまま返す
   }
 }
-
-export const STANCE_LABELS: Record<StanceTypeEnum, string> = {
-  for: "賛成",
-  against: "反対",
-  neutral: "中立",
-  conditional_for: "条件付き賛成",
-  conditional_against: "条件付き反対",
-  considering: "検討中",
-  continued_deliberation: "継続審査中",
-};
