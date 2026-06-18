@@ -26,6 +26,3 @@ CREATE INDEX ops_activity_log_occurred_on_idx ON ops_activity_log (occurred_on);
 
 -- RLS 有効・ポリシー無し（デフォルト全拒否）。アクセスは createAdminClient 経由のみ。
 ALTER TABLE ops_activity_log ENABLE ROW LEVEL SECURITY;
-
--- createAdminClient（service_role）が全操作できるよう明示的に権限付与する。
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.ops_activity_log TO service_role;
