@@ -1,3 +1,6 @@
+WARN: environment variable is unset: SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID
+WARN: environment variable is unset: SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -699,6 +702,47 @@ export type Database = {
           },
         ]
       }
+      ops_activity_log: {
+        Row: {
+          activity_type: Database["public"]["Enums"]["ops_activity_type_enum"]
+          bill_id: string | null
+          created_at: string
+          id: string
+          minutes: number
+          note: string | null
+          occurred_on: string
+          updated_at: string
+        }
+        Insert: {
+          activity_type: Database["public"]["Enums"]["ops_activity_type_enum"]
+          bill_id?: string | null
+          created_at?: string
+          id?: string
+          minutes: number
+          note?: string | null
+          occurred_on?: string
+          updated_at?: string
+        }
+        Update: {
+          activity_type?: Database["public"]["Enums"]["ops_activity_type_enum"]
+          bill_id?: string | null
+          created_at?: string
+          id?: string
+          minutes?: number
+          note?: string | null
+          occurred_on?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ops_activity_log_bill_id_fkey"
+            columns: ["bill_id"]
+            isOneToOne: false
+            referencedRelation: "bills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       preview_tokens: {
         Row: {
           bill_id: string
@@ -1279,6 +1323,12 @@ export type Database = {
         | "general_citizen"
       interview_role_enum: "assistant" | "user"
       moderation_status_enum: "ok" | "warning" | "ng"
+      ops_activity_type_enum:
+        | "selection"
+        | "content"
+        | "interview_config"
+        | "review"
+        | "other"
       stance_type_enum:
         | "for"
         | "against"
@@ -1447,6 +1497,13 @@ export const Constants = {
       ],
       interview_role_enum: ["assistant", "user"],
       moderation_status_enum: ["ok", "warning", "ng"],
+      ops_activity_type_enum: [
+        "selection",
+        "content",
+        "interview_config",
+        "review",
+        "other",
+      ],
       stance_type_enum: [
         "for",
         "against",
@@ -1461,3 +1518,5 @@ export const Constants = {
   },
 } as const
 
+A new version of Supabase CLI is available: v2.107.0 (currently installed v2.105.0)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
