@@ -1,15 +1,15 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { routes } from "@/lib/routes";
 import { BillEditForm } from "@/features/bills-edit/client/components/bill-edit-form";
 import { BillTagsForm } from "@/features/bills-edit/client/components/bill-tags-form";
 import { getBillById } from "@/features/bills-edit/server/loaders/get-bill-by-id";
 import { getBillTagIds } from "@/features/bills-edit/server/loaders/get-bill-tag-ids";
 import { loadDietSessions } from "@/features/diet-sessions/server/loaders/load-diet-sessions";
-import { StanceForm } from "@/features/mirai-stance/client/components/stance-form";
-import { getStanceByBillId } from "@/features/mirai-stance/server/loaders/get-stance-by-bill-id";
+import { DiscussionPointsForm } from "@/features/discussion-points/client/components/discussion-points-form";
+import { getDiscussionPointsByBillId } from "@/features/discussion-points/server/loaders/get-discussion-points-by-bill-id";
 import { loadTags } from "@/features/tags/server/loaders/load-tags";
+import { routes } from "@/lib/routes";
 
 interface BillEditPageProps {
   params: Promise<{
@@ -19,10 +19,10 @@ interface BillEditPageProps {
 
 export default async function BillEditPage({ params }: BillEditPageProps) {
   const { id } = await params;
-  const [bill, stance, allTags, selectedTagIds, dietSessions] =
+  const [bill, discussionPoints, allTags, selectedTagIds, dietSessions] =
     await Promise.all([
       getBillById(id),
-      getStanceByBillId(id),
+      getDiscussionPointsByBillId(id),
       loadTags(),
       getBillTagIds(id),
       loadDietSessions(),
@@ -51,7 +51,10 @@ export default async function BillEditPage({ params }: BillEditPageProps) {
 
       <div className="space-y-6">
         <BillEditForm bill={bill} dietSessions={dietSessions} />
-        <StanceForm billId={bill.id} stance={stance} billStatus={bill.status} />
+        <DiscussionPointsForm
+          billId={bill.id}
+          discussionPoints={discussionPoints}
+        />
         <BillTagsForm
           billId={bill.id}
           allTags={allTags}

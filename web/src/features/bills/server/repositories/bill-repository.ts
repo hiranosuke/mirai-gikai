@@ -79,12 +79,12 @@ export async function findBillById(id: string) {
 }
 
 /**
- * 議案のmirai_stanceを取得
+ * 議案の論点整理を取得
  */
-export async function findMiraiStanceByBillId(billId: string) {
+export async function findDiscussionPointsByBillId(billId: string) {
   const supabase = createAdminClient();
   const { data, error } = await supabase
-    .from("mirai_stances")
+    .from("discussion_points")
     .select("*")
     .eq("bill_id", billId)
     .single();

@@ -6,7 +6,7 @@ import {
   createTestTag,
   cleanupTestTag,
   createTestBillTag,
-  createTestMiraiStance,
+  createTestDiscussionPoints,
   createTestPreviewToken,
   createTestDietSession,
   cleanupTestDietSession,
@@ -15,7 +15,7 @@ import {
   findPublishedBillsWithContents,
   findPublishedBillById,
   findBillById,
-  findMiraiStanceByBillId,
+  findDiscussionPointsByBillId,
   findTagsByBillId,
   findBillContentByDifficulty,
   findTagsByBillIds,
@@ -162,30 +162,30 @@ describe("bill-repository 統合テスト", () => {
   });
 
   // ============================================================
-  // findMiraiStanceByBillId
+  // findDiscussionPointsByBillId
   // ============================================================
 
-  describe("findMiraiStanceByBillId", () => {
-    it("議案のmirai_stanceを取得できる", async () => {
+  describe("findDiscussionPointsByBillId", () => {
+    it("議案の論点整理を取得できる", async () => {
       const bill = await createTestBill();
       billIds.push(bill.id);
-      await createTestMiraiStance(bill.id, {
-        type: "for",
-        comment: "賛成コメント",
+      await createTestDiscussionPoints(bill.id, {
+        pro_points: "賛成の論拠",
+        con_points: "反対の論拠",
       });
 
-      const result = await findMiraiStanceByBillId(bill.id);
+      const result = await findDiscussionPointsByBillId(bill.id);
 
       expect(result).not.toBeNull();
-      expect(result?.type).toBe("for");
-      expect(result?.comment).toBe("賛成コメント");
+      expect(result?.pro_points).toBe("賛成の論拠");
+      expect(result?.con_points).toBe("反対の論拠");
     });
 
-    it("stanceが存在しない場合はnullを返す", async () => {
+    it("論点整理が存在しない場合はnullを返す", async () => {
       const bill = await createTestBill();
       billIds.push(bill.id);
 
-      const result = await findMiraiStanceByBillId(bill.id);
+      const result = await findDiscussionPointsByBillId(bill.id);
 
       expect(result).toBeNull();
     });

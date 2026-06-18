@@ -16,7 +16,7 @@ const TABLES_TO_CLEAR = [
   "interview_sessions",
   "interview_questions",
   "interview_configs",
-  "mirai_stances",
+  "discussion_points",
   "chats",
   "bill_contents",
   "bills_tags",

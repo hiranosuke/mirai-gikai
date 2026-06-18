@@ -307,6 +307,41 @@ export type Database = {
         }
         Relationships: []
       }
+      discussion_points: {
+        Row: {
+          bill_id: string
+          con_points: string | null
+          created_at: string
+          id: string
+          pro_points: string | null
+          updated_at: string
+        }
+        Insert: {
+          bill_id: string
+          con_points?: string | null
+          created_at?: string
+          id?: string
+          pro_points?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bill_id?: string
+          con_points?: string | null
+          created_at?: string
+          id?: string
+          pro_points?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_points_bill_id_fkey"
+            columns: ["bill_id"]
+            isOneToOne: true
+            referencedRelation: "bills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       expert_registrations: {
         Row: {
           affiliation: string
@@ -660,41 +695,6 @@ export type Database = {
             columns: ["interview_config_id"]
             isOneToOne: false
             referencedRelation: "interview_configs"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      mirai_stances: {
-        Row: {
-          bill_id: string
-          comment: string | null
-          created_at: string
-          id: string
-          type: Database["public"]["Enums"]["stance_type_enum"]
-          updated_at: string
-        }
-        Insert: {
-          bill_id: string
-          comment?: string | null
-          created_at?: string
-          id?: string
-          type: Database["public"]["Enums"]["stance_type_enum"]
-          updated_at?: string
-        }
-        Update: {
-          bill_id?: string
-          comment?: string | null
-          created_at?: string
-          id?: string
-          type?: Database["public"]["Enums"]["stance_type_enum"]
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "mirai_stances_bill_id_fkey"
-            columns: ["bill_id"]
-            isOneToOne: true
-            referencedRelation: "bills"
             referencedColumns: ["id"]
           },
         ]
@@ -1055,11 +1055,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "topic_opinion_topic_id_fkey"
-            columns: ["topic_id"]
+            foreignKeyName: "topic_opinion_topic_fk"
+            columns: ["version_id", "topic_id"]
             isOneToOne: false
             referencedRelation: "topic"
-            referencedColumns: ["id"]
+            referencedColumns: ["version_id", "id"]
           },
           {
             foreignKeyName: "topic_opinion_version_id_fkey"

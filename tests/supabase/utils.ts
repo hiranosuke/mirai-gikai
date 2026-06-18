@@ -251,26 +251,26 @@ export async function createTestBillTag(billId: string, tagId: string) {
   return data;
 }
 
-/** テスト用 mirai_stances を作成 */
-export async function createTestMiraiStance(
+/** テスト用 discussion_points を作成 */
+export async function createTestDiscussionPoints(
   billId: string,
   overrides: Partial<{
-    type: "for" | "against" | "neutral";
-    comment: string;
+    pro_points: string;
+    con_points: string;
   }> = {}
 ) {
   const defaults = {
     bill_id: billId,
-    type: "for" as const,
-    comment: "テストコメント",
+    pro_points: "賛成の論拠（テスト）",
+    con_points: "反対の論拠（テスト）",
     ...overrides,
   };
   const { data, error } = await adminClient
-    .from("mirai_stances")
+    .from("discussion_points")
     .insert(defaults)
     .select()
     .single();
-  if (error) throw new Error(`mirai_stances 作成失敗: ${error.message}`);
+  if (error) throw new Error(`discussion_points 作成失敗: ${error.message}`);
   return data;
 }
 
