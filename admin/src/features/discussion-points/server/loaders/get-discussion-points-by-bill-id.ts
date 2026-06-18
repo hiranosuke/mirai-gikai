@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { DiscussionPoints } from "../../shared/types";
 import { findDiscussionPointsByBillId } from "../repositories/discussion-points-repository";
 
