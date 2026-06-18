@@ -37,6 +37,14 @@ describe("createOpsActivityLogSchema", () => {
       }).success
     ).toBe(false);
   });
+  it("occurred_on の実在しない日付を弾く", () => {
+    expect(
+      createOpsActivityLogSchema.safeParse({
+        ...valid,
+        occurred_on: "2026-13-99",
+      }).success
+    ).toBe(false);
+  });
   it("bill_id が UUID 文字列を受け入れる", () => {
     expect(
       createOpsActivityLogSchema.safeParse({

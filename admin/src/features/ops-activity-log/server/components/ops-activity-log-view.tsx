@@ -1,3 +1,5 @@
+import "server-only";
+
 import { OpsActivityLogDeleteButton } from "../../client/components/ops-activity-log-delete-button";
 import type { BillLogGroup, BillReferenceSignal } from "../../shared/types";
 import { getActivityTypeLabel } from "../../shared/utils/activity-type-labels";
