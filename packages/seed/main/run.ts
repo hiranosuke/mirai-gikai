@@ -2,7 +2,7 @@ import {
   bills,
   tags,
   dietSessions,
-  createMiraiStances,
+  createDiscussionPoints,
   createBillsTags,
   createInterviewConfig,
   createInterviewQuestions,
@@ -13,7 +13,7 @@ import { createAdminClient, clearAllData } from "../shared/helper";
 // ============================================================
 // さいたま市版 PoC シード（最小単位）
 // 投入順: tags → diet_sessions → bills → (active会期へ紐付け)
-//        → bill_contents → mirai_stances → bills_tags
+//        → bill_contents → discussion_points → bills_tags
 //        → interview_config → interview_questions
 // 大量のダミーセッション/レポートは投入しない（PoC は実測主義。
 // Grafana のパネルは実運用でインタビューを回すと埋まる）。
@@ -118,24 +118,26 @@ async function seedDatabase() {
 
     console.log(`✅ Inserted ${insertedContents.length} bill contents`);
 
-    // Insert mirai_stances (= 論点整理)
-    console.log("🎯 Inserting stances (論点整理)...");
-    const miraiStances = createMiraiStances(insertedBills);
+    // Insert discussion_points (= 論点整理)
+    console.log("🎯 Inserting discussion points (論点整理)...");
+    const discussionPoints = createDiscussionPoints(insertedBills);
 
-    const { data: insertedStances, error: stancesError } = await supabase
-      .from("mirai_stances")
-      .insert(miraiStances)
+    const { data: insertedPoints, error: pointsError } = await supabase
+      .from("discussion_points")
+      .insert(discussionPoints)
       .select("id");
 
-    if (stancesError) {
-      throw new Error(`Failed to insert stances: ${stancesError.message}`);
+    if (pointsError) {
+      throw new Error(
+        `Failed to insert discussion points: ${pointsError.message}`
+      );
     }
 
-    if (!insertedStances) {
-      throw new Error("No stances were inserted");
+    if (!insertedPoints) {
+      throw new Error("No discussion points were inserted");
     }
 
-    console.log(`✅ Inserted ${insertedStances.length} stances`);
+    console.log(`✅ Inserted ${insertedPoints.length} discussion points`);
 
     // Insert bills_tags (関連付け)
     console.log("🔗 Inserting bills-tags relations...");
@@ -212,7 +214,7 @@ async function seedDatabase() {
     console.log(`  Tags: ${insertedTags.length}`);
     console.log(`  Bills: ${insertedBills.length}`);
     console.log(`  Bill Contents: ${insertedContents.length}`);
-    console.log(`  Stances: ${insertedStances.length}`);
+    console.log(`  Discussion Points: ${insertedPoints.length}`);
     console.log(`  Bills-Tags Relations: ${insertedBillsTags.length}`);
     console.log(`  Interview Config: ${interviewConfigData ? 1 : 0}`);
     console.log(`  Interview Questions: ${insertedQuestionsCount}`);

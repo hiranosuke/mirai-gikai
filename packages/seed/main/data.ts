@@ -1,8 +1,8 @@
 import type { Database } from "@mirai-gikai/supabase";
 
 type BillInsert = Database["public"]["Tables"]["bills"]["Insert"];
-type MiraiStanceInsert =
-  Database["public"]["Tables"]["mirai_stances"]["Insert"];
+type DiscussionPointsInsert =
+  Database["public"]["Tables"]["discussion_points"]["Insert"];
 type TagInsert = Database["public"]["Tables"]["tags"]["Insert"];
 type BillsTagsInsert = Database["public"]["Tables"]["bills_tags"]["Insert"];
 type DietSessionInsert =
@@ -85,34 +85,25 @@ export function createBillsTags(
   return billsTags;
 }
 
-// 議案ごとの見解。
-// さいたま市議には該当議員（チームみらい）がいないため、単一スタンスではなく
-// 「論点整理（賛成の論拠／反対の論拠を併記）」を中立スタンス（neutral）で入れる。
-// 表示ラベルの読み替え（「チームみらいの見解」→「論点整理」）は task2/3 で対応。
-const miraiStancesData: Omit<MiraiStanceInsert, "bill_id">[] = [
+// 議案ごとの論点整理。
+// さいたま市議には該当議員（特定政党）がいないため、主体の賛否は表明せず、
+// 賛成の論拠／反対の論拠を中立に併記する。
+const discussionPointsData: Omit<DiscussionPointsInsert, "bill_id">[] = [
   {
-    type: "neutral",
-    comment: `【論点整理】特定の立場をとらず、賛成・反対それぞれの論拠を併記します。
-
-■ 賛成の論拠
-- 近年の猛暑で、空調のない体育館は熱中症リスクが高く、児童・生徒の安全と授業（体育・式典）の実施に支障が出ている。
+    pro_points: `- 近年の猛暑で、空調のない体育館は熱中症リスクが高く、児童・生徒の安全と授業（体育・式典）の実施に支障が出ている。
 - 体育館は災害時の指定避難所を兼ねており、空調整備は防災対策としても効果が大きい。
-- 周辺自治体でも整備が進んでおり、教育環境の地域間格差を是正する必要がある。
-
-■ 反対・慎重の論拠
-- 全校整備には多額の初期費用に加え、電気代・保守などの継続的な維持費が市財政を圧迫する。
+- 周辺自治体でも整備が進んでおり、教育環境の地域間格差を是正する必要がある。`,
+    con_points: `- 全校整備には多額の初期費用に加え、電気代・保守などの継続的な維持費が市財政を圧迫する。
 - 限られた予算の中で、老朽校舎の改修やトイレ改善など他の優先課題との兼ね合いを問う声がある。
-- 稼働日数が限られる体育館への大規模投資より、断熱・送風など費用対効果の高い代替策を先に検討すべきとの指摘。
-
-ご自身がどの論点を重視するか、インタビューでお聞かせください。`,
+- 稼働日数が限られる体育館への大規模投資より、断熱・送風など費用対効果の高い代替策を先に検討すべきとの指摘。`,
   },
 ];
 
-export function createMiraiStances(
+export function createDiscussionPoints(
   insertedBills: { id: string; name: string }[]
-): MiraiStanceInsert[] {
-  return miraiStancesData.map((stance, index) => ({
-    ...stance,
+): DiscussionPointsInsert[] {
+  return discussionPointsData.map((points, index) => ({
+    ...points,
     bill_id: insertedBills[index]?.id || "",
   }));
 }
