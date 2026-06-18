@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -22,21 +25,41 @@
       "id": 1,
       "title": "累計 AI コスト",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
       "fieldConfig": {
-        "defaults": { "unit": "currencyUSD", "decimals": 4 },
+        "defaults": {
+          "unit": "currencyUSD",
+          "decimals": 4
+        },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "colorMode": "value",
         "graphMode": "none",
         "textMode": "auto"
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "select coalesce(sum(cost_usd), 0) as \"累計コスト\" from chat_usage_events;",
@@ -48,21 +71,41 @@
       "id": 2,
       "title": "当月 AI コスト",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
       "fieldConfig": {
-        "defaults": { "unit": "currencyUSD", "decimals": 4 },
+        "defaults": {
+          "unit": "currencyUSD",
+          "decimals": 4
+        },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "colorMode": "value",
         "graphMode": "none",
         "textMode": "auto"
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "select coalesce(sum(cost_usd), 0) as \"当月コスト\" from chat_usage_events where occurred_at >= date_trunc('month', now());",
@@ -74,21 +117,43 @@
       "id": 3,
       "title": "インタビュー完了率",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
       "fieldConfig": {
-        "defaults": { "unit": "percent", "decimals": 1, "min": 0, "max": 100 },
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "max": 100
+        },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "colorMode": "value",
         "graphMode": "none",
         "textMode": "auto"
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "select case when count(*) = 0 then 0 else round(100.0 * count(completed_at) / count(*), 1) end as \"完了率\" from interview_sessions;",
@@ -100,21 +165,41 @@
       "id": 4,
       "title": "公開レポート数",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
       "fieldConfig": {
-        "defaults": { "unit": "short", "decimals": 0 },
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "colorMode": "value",
         "graphMode": "none",
         "textMode": "auto"
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "select count(*) as \"公開レポート数\" from interview_report where is_public_by_admin = true;",
@@ -126,22 +211,44 @@
       "id": 5,
       "title": "日次 AI コスト (USD)",
       "type": "timeseries",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "currencyUSD",
-          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1 }
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "lineWidth": 1
+          }
         },
         "overrides": []
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "single", "sort": "none" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "time_series",
           "rawQuery": true,
           "rawSql": "select date_trunc('day', occurred_at) as time, sum(cost_usd) as \"コスト(USD)\" from chat_usage_events group by 1 order by 1;",
@@ -153,22 +260,47 @@
       "id": 6,
       "title": "モデル別コスト (日次)",
       "type": "timeseries",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "currencyUSD",
-          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1, "stacking": { "mode": "normal" } }
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "lineWidth": 1,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
         },
         "overrides": []
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "desc" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "time_series",
           "rawQuery": true,
           "rawSql": "select date_trunc('day', occurred_at) as time, model as metric, sum(cost_usd) as value from chat_usage_events group by 1, 2 order by 1;",
@@ -180,22 +312,45 @@
       "id": 7,
       "title": "日次インタビュー (開始 / 完了)",
       "type": "timeseries",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2, "pointSize": 5 }
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "pointSize": 5
+          }
         },
         "overrides": []
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "time_series",
           "rawQuery": true,
           "rawSql": "select date_trunc('day', started_at) as time, count(*) as \"開始\", count(completed_at) as \"完了\" from interview_sessions group by 1 order by 1;",
@@ -207,21 +362,51 @@
       "id": 8,
       "title": "スタンス分布",
       "type": "piechart",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
       "fieldConfig": {
-        "defaults": { "unit": "short", "decimals": 0 },
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "pieType": "pie",
-        "legend": { "displayMode": "list", "placement": "right", "showLegend": true, "values": ["value"] },
-        "tooltip": { "mode": "single", "sort": "none" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "table",
           "rawQuery": true,
           "rawSql": "select count(*) filter (where stance = 'for') as \"賛成\", count(*) filter (where stance = 'against') as \"反対\", count(*) filter (where stance = 'neutral') as \"中立\" from interview_report;",
@@ -233,22 +418,44 @@
       "id": 9,
       "title": "公開議案数の推移 (運用負荷プロキシ)",
       "type": "timeseries",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 20 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1 }
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "lineWidth": 1
+          }
         },
         "overrides": []
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "single", "sort": "none" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "time_series",
           "rawQuery": true,
           "rawSql": "select date_trunc('day', coalesce(published_at, created_at)) as time, count(*) as \"公開議案数\" from bills where publish_status = 'published' group by 1 order by 1;",
@@ -260,25 +467,168 @@
       "id": 10,
       "title": "インタビュー設定作成数 (運用負荷プロキシ)",
       "type": "timeseries",
-      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 20 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "custom": { "drawStyle": "bars", "fillOpacity": 60, "lineWidth": 1 }
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "lineWidth": 1
+          }
         },
         "overrides": []
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "mode": "single", "sort": "none" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
           "format": "time_series",
           "rawQuery": true,
           "rawSql": "select date_trunc('day', created_at) as time, count(*) as \"設定作成数\" from interview_configs group by 1 order by 1;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "議案あたり作業時間 (時間)",
+      "type": "barchart",
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "h"
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select coalesce(b.name, '（議案に紐づかない作業）') as \"議案\", round(sum(o.minutes)/60.0, 1) as \"作業時間\" from ops_activity_log o left join bills b on b.id = o.bill_id group by b.name order by 2 desc;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "作業種別別の作業時間 (時間)",
+      "type": "piechart",
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "h"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select case activity_type when 'selection' then '議案選定' when 'content' then 'コンテンツ作成' when 'interview_config' then 'インタビュー設定' when 'review' then 'レビュー・公開' else 'その他' end as \"種別\", round(sum(minutes)/60.0, 1) as \"作業時間\" from ops_activity_log group by activity_type order by 2 desc;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "当月の累計作業時間 (時間)",
+      "type": "stat",
+      "datasource": {
+        "type": "postgres",
+        "uid": "mirai-supabase"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "h"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "mirai-supabase"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select round(coalesce(sum(minutes),0)/60.0, 1) as \"当月作業時間\" from ops_activity_log where occurred_on >= date_trunc('month', current_date);",
           "refId": "A"
         }
       ]
@@ -286,9 +636,18 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": ["mirai-gikai", "poc", "saitama"],
-  "templating": { "list": [] },
-  "time": { "from": "now-90d", "to": "now" },
+  "tags": [
+    "mirai-gikai",
+    "poc",
+    "saitama"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
   "timepicker": {},
   "timezone": "browser",
   "title": "みらい議会＠さいたま PoC オーバービュー",
