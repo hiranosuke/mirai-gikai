@@ -12,6 +12,7 @@ const navigationLinks = [
   { href: routes.tags(), label: "タグ管理" },
   { href: routes.interviews(), label: "インタビュー" },
   { href: routes.experts(), label: "有識者" },
+  { href: routes.opsActivityLog(), label: "作業ログ" },
   { href: routes.admins(), label: "管理者" },
 ];
 
