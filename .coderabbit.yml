@@ -10,6 +10,12 @@ reviews:
   auto_review:
     enabled: true
     drafts: true
+    # デフォルトブランチ(develop)に加え、さいたまPoCの作業ベースである
+    # poc/saitama-mirai-gikai 宛のPRも自動レビュー対象にする。
+    # （未設定だとデフォルトブランチ宛PRしかレビューされない）
+    base_branches:
+      - "develop"
+      - "poc/saitama-mirai-gikai"
     ignore_title_keywords: []
     labels:
       - "!skip-ai-review"
@@ -39,3 +45,5 @@ reviews:
     - "!**/.next/**"
     - "!**/coverage/**"
     - "!**/*.snap"
+    # Supabase 生成型（レビュー対象外）
+    - "!**/packages/supabase/types/**"
