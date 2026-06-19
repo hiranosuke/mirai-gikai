@@ -13,7 +13,8 @@ export function useBillForm() {
 
   const handleSubmit = async (
     submitFn: () => Promise<void>,
-    errorMessage = "処理中にエラーが発生しました"
+    errorMessage = "処理中にエラーが発生しました",
+    onSuccess?: () => void
   ) => {
     setIsSubmitting(true);
     setError(null);
@@ -21,6 +22,7 @@ export function useBillForm() {
     try {
       await submitFn();
       toast.success("保存しました");
+      onSuccess?.();
       router.refresh();
     } catch (err) {
       // Next.jsのリダイレクトエラーはそのまま投げる
