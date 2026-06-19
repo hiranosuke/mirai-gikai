@@ -14,6 +14,7 @@ import {
   type BillUpdateInput,
   billUpdateSchema,
 } from "../../shared/types";
+import { useActivityLogPrompt } from "@/features/ops-activity-log/client/hooks/use-activity-log-prompt";
 import { useBillForm } from "../hooks/use-bill-form";
 import { BillFormFields } from "./bill-form-fields";
 
@@ -24,6 +25,10 @@ interface BillEditFormProps {
 
 export function BillEditForm({ bill, dietSessions }: BillEditFormProps) {
   const { isSubmitting, error, handleSubmit, handleCancel } = useBillForm();
+  const { promptAfterSave, dialog } = useActivityLogPrompt({
+    billId: bill.id,
+    defaultActivityType: "selection",
+  });
 
   // If bill has no diet_session_id, default to the latest session (first in the list)
   const defaultDietSessionId =
@@ -57,46 +62,50 @@ export function BillEditForm({ bill, dietSessions }: BillEditFormProps) {
   const onSubmit = (data: BillUpdateInput) => {
     handleSubmit(
       () => updateBill(bill.id, data),
-      "更新中にエラーが発生しました"
+      "更新中にエラーが発生しました",
+      promptAfterSave
     );
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>議案基本情報編集</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <BillFormFields
-              control={form.control}
-              billId={bill.id}
-              dietSessions={dietSessions}
-            />
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>議案基本情報編集</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <BillFormFields
+                control={form.control}
+                billId={bill.id}
+                dietSessions={dietSessions}
+              />
 
-            {error && (
-              <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
-                {error}
+              {error && (
+                <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
+                  {error}
+                </div>
+              )}
+
+              <div className="flex items-center gap-4">
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "保存中..." : "保存"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleCancel}
+                  disabled={isSubmitting}
+                >
+                  キャンセル
+                </Button>
               </div>
-            )}
-
-            <div className="flex items-center gap-4">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "保存中..." : "保存"}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleCancel}
-                disabled={isSubmitting}
-              >
-                キャンセル
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+      {dialog}
+    </>
   );
 }
