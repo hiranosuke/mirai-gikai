@@ -282,6 +282,60 @@
           "refId": "A"
         }
       ]
+    },
+    {
+      "id": 11,
+      "title": "議案あたり作業時間 (時間)",
+      "type": "barchart",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
+      "fieldConfig": { "defaults": { "unit": "h" }, "overrides": [] },
+      "options": { "orientation": "horizontal", "legend": { "showLegend": false } },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select coalesce(b.name, '（議案に紐づかない作業）') as \"議案\", round(sum(o.minutes)/60.0, 1) as \"作業時間\" from ops_activity_log o left join bills b on b.id = o.bill_id group by b.name order by 2 desc;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "作業種別別の作業時間 (時間)",
+      "type": "piechart",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
+      "fieldConfig": { "defaults": { "unit": "h" }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "right", "showLegend": true } },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select case activity_type when 'selection' then '議案選定' when 'content' then 'コンテンツ作成' when 'interview_config' then 'インタビュー設定' when 'review' then 'レビュー・公開' else 'その他' end as \"種別\", round(sum(minutes)/60.0, 1) as \"作業時間\" from ops_activity_log group by activity_type order by 2 desc;",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "当月の累計作業時間 (時間)",
+      "type": "stat",
+      "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 36 },
+      "fieldConfig": { "defaults": { "unit": "h" }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none" },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "mirai-supabase" },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select round(coalesce(sum(minutes),0)/60.0, 1) as \"当月作業時間\" from ops_activity_log where occurred_on >= date_trunc('month', current_date);",
+          "refId": "A"
+        }
+      ]
     }
   ],
   "refresh": "",
