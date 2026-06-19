@@ -52,17 +52,14 @@ alter table public.ops_activity_log enable row level security;  -- ポリシー�
 | `review` | レビュー・公開 |
 | `other` | 上記以外（告知・振り返り等） |
 
-## 3. 参考シグナル（loader で都度計算・非永続）
+## 3. 参考シグナル（**廃止 — 増分3-C のタイマー実測へ移行**）
 
-議案ごとに既存タイムスタンプから**事実のみ**を算出し、入力画面に参考表示する。`minutes` には自動代入しない。
-
-| 種別 | 参考シグナル | 元データ |
-|---|---|---|
-| コンテンツ作成 | `min(created_at)→max(updated_at)` の経過 / 難易度本数 | `bill_contents` |
-| インタビュー設定 | `created_at→updated_at` の経過 | `interview_configs` |
-| 公開 | `published_at` の有無・日付 | `bills` |
-
-表示は「◯日 / ◯時間 経過」程度。あくまで人が `minutes` を入れる際の手がかり。
+> **2026-06-19 更新**: 当初は議案ごとに `bill_contents`/`interview_configs` の
+> `created_at→updated_at` 経過を「参考シグナル」として入力画面に表示する設計だったが、
+> 「経過時間」が「作業時間」と誤読され、かつ created/updated 差分は放置時間を含み実作業と乖離する
+> ため、**この区画は実装から削除した**。代替として、議案関連の編集ページを開いている**実時間を計測し、
+> 保存時にダイアログで確認して `ops_activity_log` に登録する半自動方式**を別増分（3-C）で設計・実装する。
+> 本PR（増分3-B）は テーブル + 手入力フォーム + 議案別一覧 + Grafana の土台のみを提供する。
 
 ## 4. admin 機能（feature: `ops-activity-log`、`(protected)` 配下）
 

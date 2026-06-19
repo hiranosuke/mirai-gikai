@@ -32,45 +32,6 @@ export async function findBillOptions() {
   return data;
 }
 
-/** 参考シグナルの元データ: 議案（公開日時付き）。 */
-export async function findBillsForSignals() {
-  const supabase = createAdminClient();
-  const { data, error } = await supabase
-    .from("bills")
-    .select("id, name, published_at");
-
-  if (error) {
-    throw new Error(`議案の取得に失敗しました: ${error.message}`);
-  }
-  return data;
-}
-
-/** 参考シグナルの元データ: bill_contents のタイムスタンプ。 */
-export async function findBillContentTimes() {
-  const supabase = createAdminClient();
-  const { data, error } = await supabase
-    .from("bill_contents")
-    .select("bill_id, created_at, updated_at");
-
-  if (error) {
-    throw new Error(`コンテンツ情報の取得に失敗しました: ${error.message}`);
-  }
-  return data;
-}
-
-/** 参考シグナルの元データ: interview_configs のタイムスタンプ。 */
-export async function findInterviewConfigTimes() {
-  const supabase = createAdminClient();
-  const { data, error } = await supabase
-    .from("interview_configs")
-    .select("bill_id, created_at, updated_at");
-
-  if (error) {
-    throw new Error(`インタビュー設定の取得に失敗しました: ${error.message}`);
-  }
-  return data;
-}
-
 export async function createOpsActivityLogRecord(
   input: CreateOpsActivityLogInput
 ) {

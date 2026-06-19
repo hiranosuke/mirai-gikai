@@ -5,7 +5,7 @@ import { loadOpsActivityLogs } from "../loaders/load-ops-activity-logs";
 import { OpsActivityLogView } from "./ops-activity-log-view";
 
 export async function OpsActivityLogPageFeature() {
-  const { groups, billOptions, referenceSignals } = await loadOpsActivityLogs();
+  const { groups, billOptions } = await loadOpsActivityLogs();
 
   return (
     <div className="container mx-auto py-8">
@@ -20,7 +20,7 @@ export async function OpsActivityLogPageFeature() {
         <OpsActivityLogForm bills={billOptions} />
       </section>
 
-      <OpsActivityLogView groups={groups} referenceSignals={referenceSignals} />
+      <OpsActivityLogView groups={groups} />
     </div>
   );
 }

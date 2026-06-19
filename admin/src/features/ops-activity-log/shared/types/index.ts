@@ -40,16 +40,6 @@ export type BillOption = {
   name: string;
 };
 
-/** 参考シグナル（議案単位・非永続）。loader が都度計算する。 */
-export type BillReferenceSignal = {
-  bill_id: string;
-  bill_name: string;
-  content_span_hours: number | null; // bill_contents の min(created)→max(updated)
-  content_count: number; // 難易度本数
-  interview_config_span_hours: number | null;
-  published_at: string | null;
-};
-
 /** 議案ごとに集計したログ */
 export type BillLogGroup = {
   bill_id: string | null;
