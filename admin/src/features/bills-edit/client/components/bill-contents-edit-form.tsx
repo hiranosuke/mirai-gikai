@@ -34,6 +34,7 @@ import {
   billContentsUpdateSchema,
   DIFFICULTY_LEVELS,
 } from "../../shared/types/bill-contents";
+import { useActivityLogPrompt } from "@/features/ops-activity-log/client/hooks/use-activity-log-prompt";
 
 interface BillContentsEditFormProps {
   bill: Bill;
@@ -47,6 +48,11 @@ export function BillContentsEditForm({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const { promptAfterSave, dialog } = useActivityLogPrompt({
+    billId: bill.id,
+    defaultActivityType: "content",
+  });
 
   // BillContent配列を難易度別のオブジェクトに変換
   const contentsByDifficulty = billContents.reduce(
@@ -83,6 +89,7 @@ export function BillContentsEditForm({
 
     if (result.success) {
       toast.success("議案コンテンツを更新しました");
+      promptAfterSave();
     } else {
       setError(result.error);
       toast.error("更新に失敗しました");
@@ -92,7 +99,8 @@ export function BillContentsEditForm({
   }
 
   return (
-    <Card>
+    <>
+      <Card>
       <CardHeader>
         <CardTitle>議案コンテンツ編集</CardTitle>
         <p className="text-sm text-gray-600">{bill.name}</p>
@@ -198,5 +206,7 @@ export function BillContentsEditForm({
         </Form>
       </CardContent>
     </Card>
+      {dialog}
+    </>
   );
 }
