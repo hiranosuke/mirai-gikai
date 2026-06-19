@@ -48,6 +48,7 @@ import {
   DEFAULT_MODEL_LABEL,
 } from "../../shared/utils/chat-model-options";
 import { generateDefaultConfigName } from "../../shared/utils/default-config-name";
+import { useActivityLogPrompt } from "@/features/ops-activity-log/client/hooks/use-activity-log-prompt";
 
 interface InterviewConfigFormProps {
   billId: string;
@@ -81,6 +82,11 @@ export function InterviewConfigForm({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isNew = !config;
+
+  const { promptAfterSave, dialog } = useActivityLogPrompt({
+    billId,
+    defaultActivityType: "interview_config",
+  });
 
   const form = useForm<InterviewConfigInput>({
     resolver: zodResolver(interviewConfigSchema),
@@ -138,6 +144,7 @@ export function InterviewConfigForm({
           );
         } else {
           toast.success("インタビュー設定を保存しました");
+          promptAfterSave();
           router.refresh();
         }
       } else {
@@ -404,6 +411,7 @@ export function InterviewConfigForm({
           </Form>
         </CardContent>
       </Card>
+      {dialog}
     </div>
   );
 }
