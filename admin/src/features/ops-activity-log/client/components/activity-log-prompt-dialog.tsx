@@ -77,11 +77,12 @@ export function ActivityLogPromptDialog({
 
     setIsSubmitting(true);
     try {
+      const noteTrimmed = note.trim();
       const result = await createOpsActivityLog({
         bill_id: billId,
         activity_type: activityType,
         minutes: minutesNum,
-        note: note.trim() === "" ? null : note.trim(),
+        note: noteTrimmed === "" ? null : noteTrimmed,
         occurred_on: todayString(),
       });
 

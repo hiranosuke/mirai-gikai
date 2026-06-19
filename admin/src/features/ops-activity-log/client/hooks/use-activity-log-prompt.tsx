@@ -15,14 +15,19 @@ export function useActivityLogPrompt(params: {
   defaultActivityType: OpsActivityType;
 }): { promptAfterSave: () => void; dialog: ReactNode } {
   const { billId, defaultActivityType } = params;
-  const timer = useActivityTimer();
+  const { getElapsedMs, reset } = useActivityTimer();
   const [open, setOpen] = useState(false);
   const [elapsedMs, setElapsedMs] = useState(0);
 
   const promptAfterSave = useCallback(() => {
-    setElapsedMs(timer.getElapsedMs());
+    setElapsedMs(getElapsedMs());
     setOpen(true);
-  }, [timer]);
+  }, [getElapsedMs]);
+
+  const handleRecorded = useCallback(() => {
+    reset();
+    setOpen(false);
+  }, [reset]);
 
   const dialog = (
     <ActivityLogPromptDialog
@@ -31,10 +36,7 @@ export function useActivityLogPrompt(params: {
       billId={billId}
       elapsedMs={elapsedMs}
       defaultActivityType={defaultActivityType}
-      onRecorded={() => {
-        timer.reset();
-        setOpen(false);
-      }}
+      onRecorded={handleRecorded}
     />
   );
 
