@@ -131,6 +131,7 @@ export function ActivityLogPromptDialog({
               <Select
                 value={activityType}
                 onValueChange={(v) => setActivityType(v as OpsActivityType)}
+                disabled={isSubmitting}
               >
                 <SelectTrigger id={typeId}>
                   <SelectValue />
