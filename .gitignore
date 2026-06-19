@@ -13,4 +13,4 @@ node_modules
 
 # Cloud Run infra（秘密・鍵はコミットしない）
 infra/cloud-run/config.env
-*-key.json
+*-key.json.superpowers/
