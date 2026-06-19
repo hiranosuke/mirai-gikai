@@ -101,111 +101,111 @@ export function BillContentsEditForm({
   return (
     <>
       <Card>
-      <CardHeader>
-        <CardTitle>議案コンテンツ編集</CardTitle>
-        <p className="text-sm text-gray-600">{bill.name}</p>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <Tabs defaultValue="normal" className="">
-              <TabsList className="grid w-full grid-cols-2">
+        <CardHeader>
+          <CardTitle>議案コンテンツ編集</CardTitle>
+          <p className="text-sm text-gray-600">{bill.name}</p>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <Tabs defaultValue="normal" className="">
+                <TabsList className="grid w-full grid-cols-2">
+                  {DIFFICULTY_LEVELS.map((level) => (
+                    <TabsTrigger key={level.value} value={level.value}>
+                      {level.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
                 {DIFFICULTY_LEVELS.map((level) => (
-                  <TabsTrigger key={level.value} value={level.value}>
-                    {level.label}
-                  </TabsTrigger>
+                  <TabsContent
+                    key={level.value}
+                    value={level.value}
+                    className="space-y-6"
+                  >
+                    <FormField
+                      control={form.control}
+                      name={`${level.value}.title`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>タイトル</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            {level.label}
+                            レベル向けのタイトルを入力してください（任意・最大200文字）
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name={`${level.value}.summary`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>要約</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} className="min-h-[100px]" />
+                          </FormControl>
+                          <FormDescription>
+                            {level.label}
+                            レベル向けの要約を入力してください（任意・最大500文字）
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name={`${level.value}.content`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>内容</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              className="min-h-[400px] font-mono text-sm"
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            {level.label}
+                            レベル向けの内容をMarkdown形式で入力してください（任意・最大50000文字）
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
                 ))}
-              </TabsList>
+              </Tabs>
 
-              {DIFFICULTY_LEVELS.map((level) => (
-                <TabsContent
-                  key={level.value}
-                  value={level.value}
-                  className="space-y-6"
+              {error && (
+                <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
+                  {error}
+                </div>
+              )}
+
+              <div className="flex items-center gap-4">
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "保存中..." : "保存"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.push(routes.bills() as Route)}
+                  disabled={isSubmitting}
                 >
-                  <FormField
-                    control={form.control}
-                    name={`${level.value}.title`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>タイトル</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          {level.label}
-                          レベル向けのタイトルを入力してください（任意・最大200文字）
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name={`${level.value}.summary`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>要約</FormLabel>
-                        <FormControl>
-                          <Textarea {...field} className="min-h-[100px]" />
-                        </FormControl>
-                        <FormDescription>
-                          {level.label}
-                          レベル向けの要約を入力してください（任意・最大500文字）
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name={`${level.value}.content`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>内容</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            {...field}
-                            className="min-h-[400px] font-mono text-sm"
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          {level.label}
-                          レベル向けの内容をMarkdown形式で入力してください（任意・最大50000文字）
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </TabsContent>
-              ))}
-            </Tabs>
-
-            {error && (
-              <div className="rounded-md bg-red-50 p-4 text-sm text-red-800">
-                {error}
+                  キャンセル
+                </Button>
               </div>
-            )}
-
-            <div className="flex items-center gap-4">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "保存中..." : "保存"}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push(routes.bills() as Route)}
-                disabled={isSubmitting}
-              >
-                キャンセル
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
       {dialog}
     </>
   );
