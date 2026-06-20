@@ -1,6 +1,12 @@
 "use client";
 
-import { ChevronDown, ChevronRight, FileText, Folder, Loader2 } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  FileText,
+  Folder,
+  Loader2,
+} from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { fetchTreeChildren } from "@/features/assembly-archive/server/actions/fetch-tree-children";

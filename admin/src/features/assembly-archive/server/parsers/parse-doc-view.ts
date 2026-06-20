@@ -21,7 +21,9 @@ export function parseDocView(html: string): ParsedDocView {
   const root = parse(html);
   const title = root.querySelector("title")?.text ?? "";
   if (title.includes("エラー")) {
-    throw new DiscussCabinetParseError("DiscussCabinet がエラー画面を返しました");
+    throw new DiscussCabinetParseError(
+      "DiscussCabinet がエラー画面を返しました"
+    );
   }
 
   const files: DocumentFile[] = [];

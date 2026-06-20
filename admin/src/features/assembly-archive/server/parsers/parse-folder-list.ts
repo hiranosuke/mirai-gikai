@@ -13,7 +13,9 @@ export class DiscussCabinetParseError extends Error {
 function assertNotErrorScreen(root: ReturnType<typeof parse>): void {
   const title = root.querySelector("title")?.text ?? "";
   if (title.includes("エラー")) {
-    throw new DiscussCabinetParseError("DiscussCabinet がエラー画面を返しました");
+    throw new DiscussCabinetParseError(
+      "DiscussCabinet がエラー画面を返しました"
+    );
   }
 }
 

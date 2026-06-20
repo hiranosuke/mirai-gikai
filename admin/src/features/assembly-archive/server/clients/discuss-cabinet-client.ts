@@ -48,9 +48,7 @@ export function createDiscussCabinetClient(
   ): Promise<string> {
     const cookie = await establishSession();
     const body = new URLSearchParams(
-      Object.fromEntries(
-        Object.entries(params).map(([k, v]) => [k, String(v)])
-      )
+      Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)]))
     ).toString();
     const response = await fetchImpl(`${DISCUSS_CABINET_BASE_URL}${path}`, {
       method: "POST",

@@ -1,6 +1,7 @@
 import type { Cabinet } from "./types";
 
-export const DISCUSS_CABINET_BASE_URL = "https://www.discusscabinet.net/saitama";
+export const DISCUSS_CABINET_BASE_URL =
+  "https://www.discusscabinet.net/saitama";
 
 export const DISCUSS_CABINET_ENTRY_URL = `${DISCUSS_CABINET_BASE_URL}/`;
 

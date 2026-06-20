@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  DiscussCabinetParseError,
-  parseFolderList,
-} from "./parse-folder-list";
+import { DiscussCabinetParseError, parseFolderList } from "./parse-folder-list";
 
 const FOLDER_LIST_HTML = `
 <html><body>
@@ -46,8 +43,16 @@ describe("parseFolderList", () => {
   it("文書行から docid・件名・日付を抽出する", () => {
     const result = parseFolderList(FOLDER_LIST_HTML);
     expect(result.documents).toEqual([
-      { docid: 15338, title: "令和８年６月定例会請願審議結果一覧", date: "2026/06/12" },
-      { docid: 15337, title: "令和８年６月定例会議案審議結果一覧", date: "2026/06/12" },
+      {
+        docid: 15338,
+        title: "令和８年６月定例会請願審議結果一覧",
+        date: "2026/06/12",
+      },
+      {
+        docid: 15337,
+        title: "令和８年６月定例会議案審議結果一覧",
+        date: "2026/06/12",
+      },
     ]);
   });
 

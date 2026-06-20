@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { Cabinet, DocumentNode } from "@/features/assembly-archive/shared/types";
+import type {
+  Cabinet,
+  DocumentNode,
+} from "@/features/assembly-archive/shared/types";
 import { ArchiveTree } from "./archive-tree";
 import { DocumentDetailPanel } from "./document-detail-panel";
 
