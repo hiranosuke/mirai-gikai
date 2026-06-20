@@ -15,6 +15,12 @@ export interface DiscussCabinetClient {
     folderId: number;
     docid: number;
   }): Promise<string>;
+  fetchFile(input: {
+    cabinetId: number;
+    folderId: number;
+    docid: number;
+    fileId: number;
+  }): Promise<{ body: ArrayBuffer; contentType: string }>;
 }
 
 const FORM_HEADERS = {
@@ -92,6 +98,43 @@ export function createDiscussCabinetClient(
         start: 0,
         refer: "",
       });
+    },
+    async fetchFile({ cabinetId, folderId, docid, fileId }) {
+      const cookie = await establishSession();
+      const body = new URLSearchParams({
+        userid: "",
+        password: "",
+        cabinet_id: String(cabinetId),
+        folder_id: String(folderId),
+        docid: String(docid),
+        refer: "",
+        fileid: String(fileId),
+        tmpid: "",
+        new_arrival: "",
+        order: "",
+        start: "0",
+        actions: "return",
+        filerefer: "docview",
+      }).toString();
+      const response = await fetchImpl(
+        `${DISCUSS_CABINET_BASE_URL}/file_view`,
+        {
+          method: "POST",
+          headers: { ...FORM_HEADERS, Cookie: cookie },
+          body,
+          signal: AbortSignal.timeout(20000),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(
+          `DiscussCabinet ファイル取得に失敗: HTTP ${response.status}`
+        );
+      }
+      return {
+        body: await response.arrayBuffer(),
+        contentType:
+          response.headers.get("content-type") ?? "application/octet-stream",
+      };
     },
   };
 }

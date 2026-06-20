@@ -16,6 +16,10 @@ function fakeClient(html: string): DiscussCabinetClient {
   return {
     fetchFolderList: async () => "",
     fetchDocView: async () => html,
+    fetchFile: async () => ({
+      body: new ArrayBuffer(0),
+      contentType: "application/pdf",
+    }),
   };
 }
 

@@ -1,15 +1,15 @@
 "use client";
 
-import { Copy, ExternalLink, Loader2 } from "lucide-react";
+import { Copy, FileText, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { fetchDocumentDetail } from "@/features/assembly-archive/server/actions/fetch-document-detail";
 import { parseFolderPath } from "@/features/assembly-archive/server/utils/parse-folder-path";
-import { DISCUSS_CABINET_ENTRY_URL } from "@/features/assembly-archive/shared/constants";
 import type {
   DocumentDetail,
   DocumentNode,
 } from "@/features/assembly-archive/shared/types";
+import { buildFileUrl } from "@/features/assembly-archive/shared/utils/build-file-url";
 
 export function DocumentDetailPanel({
   document: doc,
@@ -114,23 +114,29 @@ export function DocumentDetailPanel({
               <span className="text-sm font-medium">添付ファイル</span>
               <ul className="mt-1 space-y-1 text-sm">
                 {detail.files.map((file) => (
-                  <li key={file.fileId} className="text-muted-foreground">
-                    {file.fileName}（ファイルID: {file.fileId}）
+                  <li key={file.fileId}>
+                    <a
+                      href={buildFileUrl({
+                        cabinetId: doc.cabinetId,
+                        folderId: doc.folderId,
+                        docid: doc.docid,
+                        fileId: file.fileId,
+                        fileName: file.fileName,
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-primary underline"
+                    >
+                      <FileText className="size-4 shrink-0" />
+                      {file.fileName}
+                    </a>
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          <a
-            href={DISCUSS_CABINET_ENTRY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm text-primary underline"
-          >
-            <ExternalLink className="size-4" />
-            DiscussCabinet で開く（文書ID: {doc.docid}）
-          </a>
+          <p className="text-xs text-muted-foreground">文書ID: {doc.docid}</p>
         </div>
       )}
     </div>

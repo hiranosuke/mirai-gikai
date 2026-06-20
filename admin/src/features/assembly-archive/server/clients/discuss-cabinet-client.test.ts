@@ -63,6 +63,37 @@ describe("discussCabinetClient", () => {
     expect(body).toContain("folder_id=224514");
   });
 
+  it("fetchFile は file_view を fileid 付きで POST し PDF バイトを返す", async () => {
+    const calls: { url: string; init: RequestInit }[] = [];
+    const pdfBytes = new Uint8Array([0x25, 0x50, 0x44, 0x46]); // %PDF
+    const fetchImpl = vi.fn(async (url: string, init: RequestInit) => {
+      calls.push({ url, init });
+      if (calls.length === 1) {
+        return makeResponse("<html></html>", "SESSION=abc; path=/");
+      }
+      return new Response(pdfBytes, {
+        status: 200,
+        headers: { "content-type": "application/pdf" },
+      });
+    });
+
+    const client = createDiscussCabinetClient(fetchImpl);
+    const result = await client.fetchFile({
+      cabinetId: 1,
+      folderId: 224514,
+      docid: 15337,
+      fileId: 17114,
+    });
+
+    expect(result.contentType).toBe("application/pdf");
+    expect(new Uint8Array(result.body)).toEqual(pdfBytes);
+    expect(calls[1].url).toContain("/file_view");
+    const body = String(calls[1].init.body);
+    expect(body).toContain("fileid=17114");
+    expect(body).toContain("actions=return");
+    expect(body).toContain("filerefer=docview");
+  });
+
   it("本リクエストが非2xxのとき throw する", async () => {
     let n = 0;
     const fetchImpl = vi.fn(async () => {
