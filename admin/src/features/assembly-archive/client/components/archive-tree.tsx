@@ -13,7 +13,6 @@ import { fetchTreeChildren } from "@/features/assembly-archive/server/actions/fe
 import type {
   Cabinet,
   DocumentNode,
-  FolderNode,
   TreeChild,
 } from "@/features/assembly-archive/shared/types";
 
@@ -152,5 +151,3 @@ export function ArchiveTree({
     </div>
   );
 }
-
-export type { FolderNode };

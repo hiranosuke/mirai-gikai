@@ -38,6 +38,7 @@ export function createDiscussCabinetClient(
       method: "POST",
       headers: FORM_HEADERS,
       body: "",
+      signal: AbortSignal.timeout(20000),
     });
     return extractCookie(response);
   }
@@ -54,6 +55,7 @@ export function createDiscussCabinetClient(
       method: "POST",
       headers: { ...FORM_HEADERS, Cookie: cookie },
       body,
+      signal: AbortSignal.timeout(20000),
     });
     return response.text();
   }
