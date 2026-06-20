@@ -40,6 +40,11 @@ export function createDiscussCabinetClient(
       body: "",
       signal: AbortSignal.timeout(20000),
     });
+    if (!response.ok) {
+      throw new Error(
+        `DiscussCabinet セッション確立に失敗: HTTP ${response.status}`
+      );
+    }
     return extractCookie(response);
   }
 
@@ -57,6 +62,9 @@ export function createDiscussCabinetClient(
       body,
       signal: AbortSignal.timeout(20000),
     });
+    if (!response.ok) {
+      throw new Error(`DiscussCabinet 取得に失敗: HTTP ${response.status}`);
+    }
     return response.text();
   }
 

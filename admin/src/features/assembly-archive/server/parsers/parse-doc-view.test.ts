@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { DiscussCabinetParseError } from "./parse-folder-list";
 import { parseDocView } from "./parse-doc-view";
+import { DiscussCabinetParseError } from "./parse-folder-list";
 
 const DOC_VIEW_HTML = `
 <html><head><title>文書詳細画面</title></head><body>

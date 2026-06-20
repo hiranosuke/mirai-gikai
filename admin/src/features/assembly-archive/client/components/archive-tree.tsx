@@ -69,13 +69,18 @@ function ExpandableFolder({
     if (children !== null || loading) return;
     setLoading(true);
     setError(null);
-    const result = await fetchTreeChildren({ cabinetId, folderId, move });
-    setLoading(false);
-    if ("error" in result) {
-      setError(result.error);
-      return;
+    try {
+      const result = await fetchTreeChildren({ cabinetId, folderId, move });
+      if ("error" in result) {
+        setError(result.error);
+        return;
+      }
+      setChildren(result.data);
+    } catch {
+      setError("議会資料の取得に失敗しました");
+    } finally {
+      setLoading(false);
     }
-    setChildren(result.data);
   }
 
   return (

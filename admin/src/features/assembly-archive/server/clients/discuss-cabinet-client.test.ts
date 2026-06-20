@@ -62,4 +62,20 @@ describe("discussCabinetClient", () => {
     expect(body).toContain("docid=15337");
     expect(body).toContain("folder_id=224514");
   });
+
+  it("本リクエストが非2xxのとき throw する", async () => {
+    let n = 0;
+    const fetchImpl = vi.fn(async () => {
+      n += 1;
+      if (n === 1) {
+        return makeResponse("<html></html>", "SESSION=abc; path=/");
+      }
+      return new Response("Server Error", { status: 500 });
+    });
+
+    const client = createDiscussCabinetClient(fetchImpl);
+    await expect(
+      client.fetchFolderList({ cabinetId: 1, folderId: 0, move: "cabinet" })
+    ).rejects.toThrow("HTTP 500");
+  });
 });

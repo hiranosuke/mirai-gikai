@@ -32,15 +32,23 @@ export function DocumentDetailPanel({
       cabinetId: doc.cabinetId,
       folderId: doc.folderId,
       docid: doc.docid,
-    }).then((result) => {
-      if (cancelled) return;
-      setLoading(false);
-      if ("error" in result) {
-        setError(result.error);
-        return;
-      }
-      setDetail(result.data);
-    });
+    })
+      .then((result) => {
+        if (cancelled) return;
+        if ("error" in result) {
+          setError(result.error);
+          return;
+        }
+        setDetail(result.data);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setError("文書の取得に失敗しました");
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setLoading(false);
+      });
     return () => {
       cancelled = true;
     };
