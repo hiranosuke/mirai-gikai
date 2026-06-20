@@ -10,7 +10,7 @@ function findValueByLabel(
 ): string {
   for (const tr of root.querySelectorAll("tr")) {
     const th = tr.querySelector("th");
-    if (th && th.text.trim().startsWith(label)) {
+    if (th?.text.trim().startsWith(label)) {
       return tr.querySelector("td")?.text.trim() ?? "";
     }
   }
