@@ -13,11 +13,13 @@ import {
   updateBillRecord,
   upsertBillContent,
 } from "@/features/bills-edit/server/repositories/bill-edit-repository";
+import { upsertBillFromDraft } from "@/features/bills-edit/server/services/upsert-bill-draft";
 import {
   billCreateSchema,
   billUpdateSchema,
 } from "@/features/bills-edit/shared/types";
 import { billContentsUpdateSchema } from "@/features/bills-edit/shared/types/bill-contents";
+import { billDraftSchema } from "@/features/bills-edit/shared/types/bill-draft";
 import {
   findBillsWithDietSessions,
   updateBillPublishStatus,
@@ -215,6 +217,22 @@ export function registerBillsTools(server: McpServer): void {
       }
       await invalidateBillsCache();
       return jsonResult({ ok: true, added: toAdd, removed: toDelete });
+    }
+  );
+
+  server.registerTool(
+    "upsert_bill_from_draft",
+    {
+      title: "議案ドラフトを一括作成/更新",
+      description:
+        "議案のメタ情報・コンテンツ（ふつう/難しい）・タグを1リクエストで作成または更新する。" +
+        "billIdを省略すると新規作成、指定すると既存議案を更新。" +
+        "contentsを省略するとコンテンツは変更されない。tagIdsを省略するとタグは変更されない。",
+      inputSchema: billDraftSchema.shape,
+    },
+    async (input) => {
+      const result = await upsertBillFromDraft(input);
+      return jsonResult({ ok: true, ...result });
     }
   );
 }
