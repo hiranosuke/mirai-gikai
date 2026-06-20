@@ -13,6 +13,7 @@ const navigationLinks = [
   { href: routes.interviews(), label: "インタビュー" },
   { href: routes.experts(), label: "有識者" },
   { href: routes.opsActivityLog(), label: "作業ログ" },
+  { href: routes.assemblyArchive(), label: "議会資料" },
   { href: routes.admins(), label: "管理者" },
 ];
 
