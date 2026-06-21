@@ -1,9 +1,5 @@
 import "server-only";
 
-import {
-  invalidateWebCache,
-  WEB_CACHE_TAGS,
-} from "@/lib/utils/cache-invalidation";
 import { calculateSetDiff } from "@/lib/utils/calculate-set-diff";
 import type { BillDraftInput } from "../../shared/types/bill-draft";
 import {
@@ -49,36 +45,38 @@ export async function upsertBillFromDraft(
     created = true;
   }
 
-  if (contents) {
-    await Promise.all(
-      (["normal", "hard"] as const).map(async (difficulty) => {
-        const data = contents[difficulty];
-        if (!data) return;
-        const { title = "", summary = "", content = "" } = data;
-        if (!title && !summary && !content) return;
-        await upsertBillContent({
-          billId: resolvedBillId,
-          difficultyLevel: difficulty,
-          title,
-          summary,
-          content,
-        });
-      })
-    );
-  }
-
-  if (tagIds !== undefined) {
-    const existingTagIds = await findBillsTagsByBillId(resolvedBillId);
-    const { toAdd, toDelete } = calculateSetDiff(existingTagIds, tagIds);
-    if (toDelete.length > 0) {
-      await deleteBillsTags(resolvedBillId, toDelete);
-    }
-    if (toAdd.length > 0) {
-      await createBillsTags(resolvedBillId, toAdd);
-    }
-  }
-
-  await invalidateWebCache([WEB_CACHE_TAGS.BILLS]);
+  await Promise.all([
+    contents
+      ? Promise.all(
+          (["normal", "hard"] as const).map(async (difficulty) => {
+            const data = contents[difficulty];
+            if (!data) return;
+            const { title = "", summary = "", content = "" } = data;
+            if (!title && !summary && !content) return;
+            await upsertBillContent({
+              billId: resolvedBillId,
+              difficultyLevel: difficulty,
+              title,
+              summary,
+              content,
+            });
+          })
+        )
+      : Promise.resolve(),
+    tagIds !== undefined
+      ? findBillsTagsByBillId(resolvedBillId).then(async (existingTagIds) => {
+          const { toAdd, toDelete } = calculateSetDiff(existingTagIds, tagIds);
+          await Promise.all([
+            toDelete.length > 0
+              ? deleteBillsTags(resolvedBillId, toDelete)
+              : Promise.resolve(),
+            toAdd.length > 0
+              ? createBillsTags(resolvedBillId, toAdd)
+              : Promise.resolve(),
+          ]);
+        })
+      : Promise.resolve(),
+  ]);
 
   return { billId: resolvedBillId, created };
 }

@@ -230,8 +230,10 @@ export function registerBillsTools(server: McpServer): void {
         "contentsを省略するとコンテンツは変更されない。tagIdsを省略するとタグは変更されない。",
       inputSchema: billDraftSchema.shape,
     },
-    async (input) => {
+    async (rawInput) => {
+      const input = billDraftSchema.parse(rawInput);
       const result = await upsertBillFromDraft(input);
+      await invalidateBillsCache();
       return jsonResult({ ok: true, ...result });
     }
   );

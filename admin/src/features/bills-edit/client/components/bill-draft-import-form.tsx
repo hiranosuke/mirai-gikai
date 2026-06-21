@@ -41,7 +41,7 @@ function buildPreview(
   const d = parsed.data;
   return {
     name: d.name,
-    status: d.status ?? "preparing",
+    status: d.status,
     billId: d.billId,
     hasNormalContent: !!(
       d.contents?.normal?.title || d.contents?.normal?.content

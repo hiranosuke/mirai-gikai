@@ -1,6 +1,10 @@
 "use server";
 
 import { requireAdmin } from "@/features/auth/server/lib/auth-server";
+import {
+  WEB_CACHE_TAGS,
+  invalidateWebCache,
+} from "@/lib/utils/cache-invalidation";
 import { getErrorMessage } from "@/lib/utils/get-error-message";
 import { billDraftSchema } from "../../shared/types/bill-draft";
 import { upsertBillFromDraft } from "../services/upsert-bill-draft";
@@ -24,6 +28,7 @@ export async function upsertBillDraftAction(
     }
 
     const result = await upsertBillFromDraft(parsed.data);
+    await invalidateWebCache([WEB_CACHE_TAGS.BILLS]);
     return { ok: true, ...result };
   } catch (error) {
     return {
