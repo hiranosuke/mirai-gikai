@@ -22,11 +22,9 @@ export default async function BillsPage({ searchParams }: BillsPageProps) {
           <h1 className="text-2xl font-bold text-gray-900">議案管理</h1>
           <p className="text-gray-600 mt-1">議案の一覧を確認・管理できます</p>
         </div>
-        <Link href={routes.billImport()}>
-          <Button variant="outline" size="sm">
-            ドラフトインポート
-          </Button>
-        </Link>
+        <Button asChild variant="outline" size="sm">
+          <Link href={routes.billImport()}>ドラフトインポート</Link>
+        </Button>
       </div>
 
       <BillList sortConfig={sortConfig} />

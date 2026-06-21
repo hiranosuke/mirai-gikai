@@ -21,9 +21,16 @@ export async function upsertBillFromDraft(
 ): Promise<UpsertBillDraftResult> {
   const { billId, contents, tagIds, submitted_date, ...metaFields } = input;
 
-  const submittedDateIso = submitted_date
-    ? `${submitted_date}T00:00:00+09:00`
-    : null;
+  // submitted_date は「未指定（undefined）= 変更しない」と
+  // 「空文字 = クリア」を区別する。空文字 → null、日付 → ISO。
+  const submittedDatePatch =
+    submitted_date === undefined
+      ? {}
+      : {
+          submitted_date: submitted_date
+            ? `${submitted_date}T00:00:00+09:00`
+            : null,
+        };
 
   let resolvedBillId: string;
   let created: boolean;
@@ -31,7 +38,7 @@ export async function upsertBillFromDraft(
   if (billId) {
     await updateBillRecord(billId, {
       ...metaFields,
-      submitted_date: submittedDateIso,
+      ...submittedDatePatch,
       updated_at: new Date().toISOString(),
     });
     resolvedBillId = billId;
@@ -39,7 +46,7 @@ export async function upsertBillFromDraft(
   } else {
     const inserted = await createBillRecord({
       ...metaFields,
-      submitted_date: submittedDateIso ?? undefined,
+      ...submittedDatePatch,
     });
     resolvedBillId = inserted.id;
     created = true;

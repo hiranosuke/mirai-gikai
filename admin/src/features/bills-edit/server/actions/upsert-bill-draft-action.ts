@@ -28,7 +28,15 @@ export async function upsertBillDraftAction(
     }
 
     const result = await upsertBillFromDraft(parsed.data);
-    await invalidateWebCache([WEB_CACHE_TAGS.BILLS]);
+
+    // キャッシュ無効化はベストエフォート。失敗しても保存自体は成功して
+    // いるため ok:false にはしない（クライアント再送による重複作成を防ぐ）。
+    try {
+      await invalidateWebCache([WEB_CACHE_TAGS.BILLS]);
+    } catch (cacheError) {
+      console.error("Bill draft cache invalidation error:", cacheError);
+    }
+
     return { ok: true, ...result };
   } catch (error) {
     return {

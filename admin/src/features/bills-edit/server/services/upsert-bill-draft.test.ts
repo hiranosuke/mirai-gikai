@@ -142,4 +142,26 @@ describe("upsertBillFromDraft", () => {
       })
     );
   });
+
+  it("更新でsubmitted_date未指定なら既存値を消さない（キーを渡さない）", async () => {
+    mocks.updateBillRecord.mockClear();
+    const existingId = "12345678-0000-4000-a000-000000000003";
+    await upsertBillFromDraft({ ...BASE_INPUT, billId: existingId });
+    const [, payload] = mocks.updateBillRecord.mock.calls[0];
+    expect(payload).not.toHaveProperty("submitted_date");
+  });
+
+  it("更新でsubmitted_dateが空文字なら明示的にnullでクリアする", async () => {
+    mocks.updateBillRecord.mockClear();
+    const existingId = "12345678-0000-4000-a000-000000000004";
+    await upsertBillFromDraft({
+      ...BASE_INPUT,
+      billId: existingId,
+      submitted_date: "",
+    });
+    expect(mocks.updateBillRecord).toHaveBeenCalledWith(
+      existingId,
+      expect.objectContaining({ submitted_date: null })
+    );
+  });
 });

@@ -19,6 +19,7 @@ type BillPreview = {
   hasNormalContent: boolean;
   hasHardContent: boolean;
   tagCount: number;
+  tagIdsProvided: boolean;
 };
 
 function parseJson(
@@ -50,6 +51,7 @@ function buildPreview(
       draft.contents?.hard?.title || draft.contents?.hard?.content
     ),
     tagCount: draft.tagIds?.length ?? 0,
+    tagIdsProvided: draft.tagIds !== undefined,
   };
 }
 
@@ -99,18 +101,22 @@ export function BillDraftImportForm() {
 
   async function handleSubmit() {
     if (parseState.status !== "ready") return;
-    setIsSubmitting(true);
-    setSubmitError(null);
+    try {
+      setIsSubmitting(true);
+      setSubmitError(null);
 
-    const result = await upsertBillDraftAction(parseState.raw);
-    setIsSubmitting(false);
+      const result = await upsertBillDraftAction(parseState.raw);
+      if (!result.ok) {
+        setSubmitError(result.error);
+        return;
+      }
 
-    if (!result.ok) {
-      setSubmitError(result.error);
-      return;
+      router.push(routes.billEdit(result.billId));
+    } catch {
+      setSubmitError("保存処理中に予期しないエラーが発生しました。");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    router.push(routes.billEdit(result.billId));
   }
 
   const isReady = parseState.status === "ready";
@@ -205,9 +211,11 @@ export function BillDraftImportForm() {
             <dd>{parseState.preview.hasHardContent ? "あり" : "なし"}</dd>
             <dt className="text-gray-500">タグ</dt>
             <dd>
-              {parseState.preview.tagCount > 0
-                ? `${parseState.preview.tagCount}件`
-                : "指定なし（既存を維持）"}
+              {!parseState.preview.tagIdsProvided
+                ? "指定なし（既存を維持）"
+                : parseState.preview.tagCount > 0
+                  ? `${parseState.preview.tagCount}件`
+                  : "0件（既存タグを全て解除）"}
             </dd>
           </dl>
 

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidCalendarDate } from "../utils/is-valid-calendar-date";
 import { billContentUpdateSchema } from "./bill-contents";
 
 const billDraftMetaSchema = z.object({
@@ -26,8 +27,8 @@ const billDraftMetaSchema = z.object({
   submitted_date: z
     .string()
     .refine(
-      (val) => val === "" || /^\d{4}-\d{2}-\d{2}$/.test(val),
-      "提出日は YYYY-MM-DD 形式で入力してください"
+      (val) => val === "" || isValidCalendarDate(val),
+      "提出日は YYYY-MM-DD 形式の実在する日付で入力してください"
     )
     .optional(),
   slug: z.string().max(200).nullable().optional(),

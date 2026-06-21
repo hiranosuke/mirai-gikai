@@ -68,6 +68,14 @@ describe("billDraftSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  it("submitted_dateが書式は正しくても存在しない暦日の場合はエラー", () => {
+    const result = billDraftSchema.safeParse({
+      name: "テスト",
+      submitted_date: "2026-02-31",
+    });
+    expect(result.success).toBe(false);
+  });
+
   it("tagIdsは任意でUUID配列", () => {
     const result = billDraftSchema.safeParse({
       name: "テスト",
