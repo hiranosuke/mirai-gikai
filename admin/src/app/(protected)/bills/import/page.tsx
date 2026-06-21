@@ -12,7 +12,7 @@ export default function BillImportPage() {
         >
           ← 議案管理
         </Link>
-        <h1 className="text-2xl font-bold text-mirai-text mt-2">
+        <h1 className="text-2xl font-bold text-foreground mt-2">
           ドラフトインポート
         </h1>
         <p className="text-gray-600 mt-1">

@@ -38,16 +38,18 @@ function buildPreview(
   parsed: ReturnType<typeof billDraftSchema.safeParse>
 ): BillPreview | null {
   if (!parsed.success) return null;
-  const d = parsed.data;
+  const draft = parsed.data;
   return {
-    name: d.name,
-    status: d.status,
-    billId: d.billId,
+    name: draft.name,
+    status: draft.status,
+    billId: draft.billId,
     hasNormalContent: !!(
-      d.contents?.normal?.title || d.contents?.normal?.content
+      draft.contents?.normal?.title || draft.contents?.normal?.content
     ),
-    hasHardContent: !!(d.contents?.hard?.title || d.contents?.hard?.content),
-    tagCount: d.tagIds?.length ?? 0,
+    hasHardContent: !!(
+      draft.contents?.hard?.title || draft.contents?.hard?.content
+    ),
+    tagCount: draft.tagIds?.length ?? 0,
   };
 }
 
@@ -118,7 +120,7 @@ export function BillDraftImportForm() {
       <div>
         <label
           htmlFor="draft-json"
-          className="block text-sm font-medium text-mirai-text mb-2"
+          className="block text-sm font-medium text-foreground mb-2"
         >
           議案ドラフトJSON
         </label>
