@@ -19,13 +19,17 @@ import type { BillWithContent } from "../../../shared/types";
 interface BillDetailHeaderProps {
   bill: BillWithContent;
   hasInterviewConfig?: boolean;
+  /** 意見数（トピック分析の total_opinions）。回答者数（人数）ではない点に注意。 */
   opinionCount?: number;
+  /** 公開トピック数。1件以上ならトピック一覧への導線として件数を併記する。 */
+  topicCount?: number;
 }
 
 export async function BillDetailHeader({
   bill,
   hasInterviewConfig,
   opinionCount,
+  topicCount,
 }: BillDetailHeaderProps) {
   const displayTitle = bill.bill_content?.title;
   const displaySummary = bill.bill_content?.summary;
@@ -96,13 +100,19 @@ export async function BillDetailHeader({
 
         {opinionCount != null && opinionCount > 0 && (
           <Link
-            href={routes.billOpinions(bill.id) as Route}
+            href={
+              (topicCount != null && topicCount > 0
+                ? routes.billTopics(bill.id)
+                : routes.billOpinions(bill.id)) as Route
+            }
             className="flex items-center gap-1 mb-4 text-primary-accent hover:opacity-80"
           >
             <MessageSquare className="size-4 relative top-[1px]" />
             <span className="text-[14px] font-bold leading-[14px] tracking-[0.14px]">
-              {opinionCount}
-              件のご意見
+              {topicCount != null &&
+                topicCount > 0 &&
+                `${topicCount}件のトピック・`}
+              {opinionCount}件のご意見
             </span>
           </Link>
         )}

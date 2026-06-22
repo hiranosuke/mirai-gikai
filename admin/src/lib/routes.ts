@@ -20,6 +20,7 @@ export const routes = {
   interviewOpinionBackfill: () => "/interview-opinion-backfill" as const,
   opsActivityLog: () => "/ops-activity-log" as const,
   assemblyArchive: () => "/assembly-archive" as const,
+  userTopicAnalysisAll: () => "/user-topic-analysis" as const,
 
   // ── 議案配下 ──────────────────────────────────────
   billEdit: (billId: string) => `/bills/${billId}/edit` as const,
