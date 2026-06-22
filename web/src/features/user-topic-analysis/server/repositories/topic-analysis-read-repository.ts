@@ -4,6 +4,7 @@ import { createAdminClient } from "@mirai-gikai/supabase";
 import type {
   PublishedVersionMeta,
   RawOpinionRow,
+  RawRespondentRow,
   RawTopicRow,
 } from "../../shared/types";
 
@@ -44,8 +45,8 @@ export async function findPublishedAnalysis(
       `id, title, description, sort_order,
        topic_opinion(
          interview_opinion(
-           id, title, content, contextual_quote, bill_sentiment,
-           interview_report!inner(is_public_by_user, moderation_status, role)
+           id, title, content, contextual_quote, bill_sentiment, richness, source_message_id, interview_report_id,
+           interview_report!inner(is_public_by_user, is_public_by_admin, moderation_status, role, role_title, created_at)
          )
        )`
     )
@@ -61,25 +62,38 @@ export async function findPublishedAnalysis(
       const o = link.interview_opinion as unknown as
         | (Omit<
             RawOpinionRow,
-            "is_public_by_user" | "moderation_status" | "role"
+            | "is_public_by_user"
+            | "moderation_status"
+            | "role"
+            | "role_title"
+            | "created_at"
           > & {
             interview_report: {
               is_public_by_user: boolean;
+              is_public_by_admin: boolean;
               moderation_status: string | null;
               role: string | null;
+              role_title: string | null;
+              created_at: string | null;
             } | null;
           })
         | null;
       if (!o || !o.interview_report) continue;
       opinions.push({
         id: o.id,
+        interview_report_id: o.interview_report_id,
+        created_at: o.interview_report.created_at,
         title: o.title,
         content: o.content,
         contextual_quote: o.contextual_quote,
+        source_message_id: o.source_message_id,
         bill_sentiment: o.bill_sentiment,
+        richness: o.richness,
         is_public_by_user: o.interview_report.is_public_by_user,
+        is_public_by_admin: o.interview_report.is_public_by_admin,
         moderation_status: o.interview_report.moderation_status,
         role: o.interview_report.role,
+        role_title: o.interview_report.role_title,
       });
     }
     return { id: t.id, title: t.title, description: t.description, opinions };
@@ -93,4 +107,36 @@ export async function findPublishedAnalysis(
     },
     rawTopics,
   };
+}
+/**
+ * 議案に紐づく公開レポート（回答者）を全件取得する。
+ * 公開レポート（管理者公開 × ユーザー公開）と同一基準でフィルタし、
+ * 回答一覧（回答者1人=1カード）で使用する。新しい回答が上に来るよう降順。
+ */
+export async function findPublicBillRespondentRows(
+  billId: string
+): Promise<RawRespondentRow[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("interview_report")
+    .select(
+      `id, role, role_title, stance, summary, created_at,
+       interview_sessions!inner(interview_configs!inner(bill_id))`
+    )
+    .eq("interview_sessions.interview_configs.bill_id", billId)
+    .eq("is_public_by_admin", true)
+    .eq("is_public_by_user", true)
+    .order("created_at", { ascending: false });
+  if (error) {
+    throw new Error(`Failed to fetch bill respondents: ${error.message}`);
+  }
+
+  return (data ?? []).map((r) => ({
+    id: r.id,
+    role: r.role,
+    role_title: r.role_title,
+    stance: r.stance,
+    summary: r.summary,
+    created_at: r.created_at,
+  }));
 }

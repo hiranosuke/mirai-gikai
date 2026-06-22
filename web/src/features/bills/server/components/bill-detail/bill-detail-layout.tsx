@@ -2,8 +2,9 @@ import { Container } from "@/components/layouts/container";
 import type { DifficultyLevelEnum } from "@/features/bill-difficulty/shared/types";
 import { InterviewLandingSection } from "@/features/interview-config/client/components/interview-landing-section";
 import { getInterviewConfig } from "@/features/interview-config/server/loaders/get-interview-config";
-import { BillInterviewOpinionsSection } from "@/features/interview-report/server/components/bill-interview-opinions-section";
 import { getPublicReportsByBillId } from "@/features/interview-report/server/loaders/get-public-reports-by-bill-id";
+import { BillTopicsPreviewSection } from "@/features/user-topic-analysis/server/components/bill-topics-preview-section";
+import { getPublicTopicAnalysis } from "@/features/user-topic-analysis/server/loaders/get-public-topic-analysis";
 import { BillDetailClient } from "../../../client/components/bill-detail/bill-detail-client";
 import { BillDisclaimer } from "../../../client/components/bill-detail/bill-disclaimer";
 import { BillStatusProgress } from "../../../client/components/bill-detail/bill-status-progress";
@@ -26,10 +27,12 @@ export async function BillDetailLayout({
   const hasDiscussionPoints = Boolean(
     discussionPoints?.pro_points?.trim() || discussionPoints?.con_points?.trim()
   );
-  const [interviewConfig, publicReportsResult] = await Promise.all([
-    getInterviewConfig(bill.id),
-    getPublicReportsByBillId(bill.id),
-  ]);
+  const [interviewConfig, publicReportsResult, topicAnalysis] =
+    await Promise.all([
+      getInterviewConfig(bill.id),
+      getPublicReportsByBillId(bill.id),
+      getPublicTopicAnalysis(bill.id),
+    ]);
 
   return (
     <div className="container mx-auto pb-8 max-w-4xl">
@@ -47,7 +50,8 @@ export async function BillDetailLayout({
         <BillDetailHeader
           bill={bill}
           hasInterviewConfig={interviewConfig != null}
-          opinionCount={publicReportsResult.totalCount}
+          opinionCount={topicAnalysis?.total_opinions ?? 0}
+          topicCount={topicAnalysis?.topics.length ?? 0}
         />
         <Container>
           {/* 議案ステータス進捗 */}
@@ -64,15 +68,15 @@ export async function BillDetailLayout({
       </BillDetailClient>
 
       <Container>
-        {publicReportsResult.totalCount > 0 && (
-          <div className="my-8">
-            <BillInterviewOpinionsSection
-              billId={bill.id}
-              reports={publicReportsResult.reports}
-              totalCount={publicReportsResult.totalCount}
-            />
-          </div>
-        )}
+        {/* 法案のトピック一覧（AIインタビュー意見の整理） */}
+        <div className="my-8">
+          <BillTopicsPreviewSection
+            billId={bill.id}
+            topics={topicAnalysis?.topics ?? []}
+            publicReportCount={publicReportsResult.totalCount}
+          />
+        </div>
+
         {interviewConfig != null && (
           <div className="my-8">
             <InterviewLandingSection billId={bill.id} />
