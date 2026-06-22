@@ -24,10 +24,6 @@ import {
 } from "@/features/bills-edit/shared/types";
 import { billContentsUpdateSchema } from "@/features/bills-edit/shared/types/bill-contents";
 import { billDraftSchema } from "@/features/bills-edit/shared/types/bill-draft";
-import {
-  findBillsWithDietSessions,
-  updateBillPublishStatus,
-} from "@/features/bills/server/repositories/bill-repository";
 import { calculateSetDiff } from "@/lib/utils/calculate-set-diff";
 import { invalidateBillsCache } from "../utils/invalidate-bills-cache";
 import { jsonResult } from "../utils/json-result";
