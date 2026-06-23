@@ -12,18 +12,18 @@ export type DifficultyLevel = "normal" | "hard";
 // バリデーションスキーマ
 export const billContentUpdateSchema = z.object({
   title: z
-    .string()
-    .max(200, "タイトルは200文字以内で入力してください")
+    .string({ error: "タイトル（title）は文字列で入力してください" })
+    .max(200, "タイトル（title）は200文字以内で入力してください")
     .optional()
     .default(""),
   summary: z
-    .string()
-    .max(500, "要約は500文字以内で入力してください")
+    .string({ error: "要約（summary）は文字列で入力してください" })
+    .max(500, "要約（summary）は500文字以内で入力してください")
     .optional()
     .default(""),
   content: z
-    .string()
-    .max(50000, "内容は50000文字以内で入力してください")
+    .string({ error: "内容（content）は文字列で入力してください" })
+    .max(50000, "内容（content）は50000文字以内で入力してください")
     .optional()
     .default(""),
 });
