@@ -156,6 +156,12 @@ describe("billDraftSchema", () => {
       );
     });
 
+    it("tagIdsの要素が不正UUIDの場合は日本語メッセージ", () => {
+      expect(
+        messageForPath({ name: "テスト", tagIds: ["not-a-uuid"] }, "tagIds.0")
+      ).toBe("tagIds の各要素はUUID形式で入力してください");
+    });
+
     it("contents.normal.titleが型違いの場合は日本語メッセージ", () => {
       expect(
         messageForPath(
