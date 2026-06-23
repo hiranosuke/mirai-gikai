@@ -19,48 +19,13 @@ describe("getBillStatusLabel", () => {
     expect(getBillStatusLabel("rejected")).toBe("否決");
   });
 
-  describe("in_originating_house", () => {
-    it("returns '衆議院審議中' when originatingHouse is HR", () => {
-      expect(getBillStatusLabel("in_originating_house", "HR")).toBe(
-        "衆議院審議中"
-      );
-    });
-
-    it("returns '参議院審議中' when originatingHouse is HC", () => {
-      expect(getBillStatusLabel("in_originating_house", "HC")).toBe(
-        "参議院審議中"
-      );
-    });
-
-    it("returns '審議中' when originatingHouse is undefined", () => {
-      expect(getBillStatusLabel("in_originating_house")).toBe("審議中");
-    });
-
-    it("returns '審議中' when originatingHouse is null", () => {
-      expect(getBillStatusLabel("in_originating_house", null)).toBe("審議中");
-    });
+  // さいたま市議会は一院制のため、発議院(HR/HC)に依存せず市議会用語を返す
+  it("returns '委員会審査中' for in_originating_house", () => {
+    expect(getBillStatusLabel("in_originating_house")).toBe("委員会審査中");
   });
 
-  describe("in_receiving_house", () => {
-    it("returns '参議院審議中' when originatingHouse is HR", () => {
-      expect(getBillStatusLabel("in_receiving_house", "HR")).toBe(
-        "参議院審議中"
-      );
-    });
-
-    it("returns '衆議院審議中' when originatingHouse is HC", () => {
-      expect(getBillStatusLabel("in_receiving_house", "HC")).toBe(
-        "衆議院審議中"
-      );
-    });
-
-    it("returns '審議中' when originatingHouse is undefined", () => {
-      expect(getBillStatusLabel("in_receiving_house")).toBe("審議中");
-    });
-
-    it("returns '審議中' when originatingHouse is null", () => {
-      expect(getBillStatusLabel("in_receiving_house", null)).toBe("審議中");
-    });
+  it("returns '本会議審議中' for in_receiving_house", () => {
+    expect(getBillStatusLabel("in_receiving_house")).toBe("本会議審議中");
   });
 
   it("returns the status string as-is for unknown status", () => {
