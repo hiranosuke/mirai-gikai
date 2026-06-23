@@ -5,7 +5,18 @@ description: agent-browser CLIを使ったブラウザ操作のガイド。Web�
 
 # agent-browser CLI ガイド
 
-`agent-browser` はAIエージェント向けの高速ブラウザ自動化CLIツール。Bashツールから直接呼び出して使う。
+`agent-browser` はAIエージェント向けの高速ブラウザ自動化CLIツール。Bashツールから呼び出して使う。
+
+> **重要 — 実行方法**: この環境では `agent-browser` はグローバル未インストールのため、素の `agent-browser ...` は `command not found` になる。**必ず `npx -y agent-browser@0.29.1` 経由で実行する**こと。以下の例の `agent-browser` はすべてこれに読み替える。
+>
+> 当環境のシェルは zsh。`AB="npx ..."; $AB open ...` は zsh が単語分割しないため失敗する。**関数に束ねる**のが確実（コードブロックごとに定義する。Bashツールはブロック間でシェル状態を保持しない）:
+> ```bash
+> ab() { npx -y agent-browser@0.29.1 "$@"; }
+> ab open "https://example.com"
+> ab snapshot -i
+> ```
+>
+> settings.local.json に `Bash(npx -y agent-browser@0.29.1 *)` の許可が必要（無いと毎回プロンプトが出て、非対話/バックグラウンド実行ではスキップされ「撮影失敗」に見える）。
 
 ## 基本ワークフロー
 

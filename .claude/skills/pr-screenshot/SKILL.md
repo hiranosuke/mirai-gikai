@@ -119,19 +119,24 @@ admin ページが対象の場合:
 
 `agent-browser` でモバイルビューポート (390x844) でスクリーンショットを撮る。
 
+> **重要**: `agent-browser` はグローバル未インストールのため、必ず `npx -y agent-browser@0.29.1` 経由で呼び出す。素の `agent-browser ...` は `command not found` になる。当環境のシェルは zsh で `AB="npx ..."; $AB` は単語分割されず失敗するため、**関数 `ab()` に束ねて使う**（コードブロックごとに定義。Bashツールはブロック間で状態を保持しない）。
+
 ```bash
 mkdir -p /tmp/pr-screenshots
+
+# agent-browser は npx 経由で固定バージョンを使う（zsh/bash 両対応）
+ab() { npx -y agent-browser@0.29.1 "$@"; }
 
 # セッション名はPR番号を使う
 SESSION="pr-${PR_NUMBER}"
 
 # ビューポートをモバイルに設定
-agent-browser --session $SESSION set viewport 390 844
+ab --session $SESSION set viewport 390 844
 
 # 各URLを開いてスクショ
-agent-browser --session $SESSION open "$URL"
-agent-browser --session $SESSION wait 3000
-agent-browser --session $SESSION screenshot /tmp/pr-screenshots/screenshot-1.png
+ab --session $SESSION open "$URL"
+ab --session $SESSION wait 3000
+ab --session $SESSION screenshot /tmp/pr-screenshots/screenshot-1.png
 ```
 
 **注意点**:
@@ -141,15 +146,16 @@ agent-browser --session $SESSION screenshot /tmp/pr-screenshots/screenshot-1.png
 - スクロールが必要な場合は `scroll down` してから撮る
 - 撮影後は `Read` ツールで画像を確認し、正しく表示されているか検証する
 
-**admin ページのログインフロー**:
+**admin ページのログインフロー**（別ブロックなので `ab()` を再定義する）:
 ```bash
-agent-browser --session $SESSION open "http://localhost:3001/login"
-agent-browser --session $SESSION snapshot -i
+ab() { npx -y agent-browser@0.29.1 "$@"; }
+ab --session $SESSION open "http://localhost:3001/login"
+ab --session $SESSION snapshot -i
 # メールとパスワードを入力
-agent-browser --session $SESSION fill "@eX" "admin@example.com"
-agent-browser --session $SESSION fill "@eY" "admin123456"
-agent-browser --session $SESSION click "@eZ"  # ログインボタン
-agent-browser --session $SESSION wait 3000
+ab --session $SESSION fill "@eX" "admin@example.com"
+ab --session $SESSION fill "@eY" "admin123456"
+ab --session $SESSION click "@eZ"  # ログインボタン
+ab --session $SESSION wait 3000
 # ログイン後、目的のページに遷移
 ```
 
@@ -224,7 +230,7 @@ rm -rf /tmp/pr-screenshots
 
 ## 注意事項
 
-- `agent-browser` CLI がインストール済みであること
+- `agent-browser` はグローバル未インストールのため、必ず `npx -y agent-browser@0.29.1` 経由で呼ぶこと（素のコマンドは `command not found`）。settings.local.json に `Bash(npx -y agent-browser@0.29.1 *)` の許可が必要。
 - `npx wrangler` が認証済みであること（未認証の場合、ユーザーに `! npx wrangler login` を促す）
 - Supabase がローカルで起動中であること（`npx supabase start`）
 - seed データには固定IDがないため、DBクエリでIDを取得する
