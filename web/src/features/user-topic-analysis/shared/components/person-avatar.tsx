@@ -1,3 +1,4 @@
+import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type BillSentiment = "期待" | "懸念" | null;
@@ -23,9 +24,7 @@ interface PersonAvatarProps {
 }
 
 /**
- * 回答者アバター（Figma の人物シルエット）。
- * lucide に同等のアイコンが無いため、デザインの「頭＋肩の2円を円でクリップ」した
- * シルエットをカスタムコンポーネントとして実装する（lucide 必須ルールの合意済み例外）。
+ * 回答者アバター（人物シルエット）。
  * 背景円・シルエット色は stance（期待/懸念）に追従する。
  */
 export function PersonAvatar({ sentiment, className }: PersonAvatarProps) {
@@ -38,18 +37,7 @@ export function PersonAvatar({ sentiment, className }: PersonAvatarProps) {
         className
       )}
     >
-      <svg
-        viewBox="0 0 46 46"
-        className={cn("size-full", fgClass[key])}
-        fill="currentColor"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {/* 頭 */}
-        <circle cx="23" cy="15.79" r="8.12" opacity="0.6" />
-        {/* 肩（下部は円マスク＝overflow-hidden で切れる） */}
-        <circle cx="23" cy="37.94" r="14.03" opacity="0.4" />
-      </svg>
+      <User className={cn("size-6", fgClass[key])} aria-hidden="true" />
     </span>
   );
 }

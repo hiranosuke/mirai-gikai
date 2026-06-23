@@ -4,6 +4,7 @@ import {
   House,
   TrendingDown,
   TrendingUp,
+  Users,
 } from "lucide-react";
 import type { ComponentType } from "react";
 import { cn } from "@/lib/utils";
@@ -12,7 +13,6 @@ import {
   userCategoryColorClass,
   userCategoryLabels,
 } from "../utils/topic-category";
-import { UsersThreeIcon } from "./users-three-icon";
 
 /** className を受け取れるアイコンコンポーネント（lucide / カスタム共通）。 */
 export type IconComponent = ComponentType<{ className?: string }>;
@@ -22,7 +22,7 @@ export const userCategoryIcons: Record<UserCategory, IconComponent> = {
   affected: House,
   industry: Briefcase,
   expert: GraduationCap,
-  citizen: UsersThreeIcon,
+  citizen: Users,
 };
 
 /**

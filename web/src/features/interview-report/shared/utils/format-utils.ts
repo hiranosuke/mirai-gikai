@@ -17,6 +17,31 @@ export function formatRoleDescriptionLines(text: string): string[] {
   return lines.map((line) => (line.startsWith("・") ? line : `・${line}`));
 }
 
+/**
+ * 回答日時を Asia/Tokyo 固定で "YYYY.M.D HH:mm" に整形する。
+ * サーバー/クライアントのローカルタイムゾーンに依存せず、常に日本時間で表示する。
+ * iso が null/不正な場合は空文字を返す。
+ */
+export function formatAnsweredAt(iso: string | null): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(d);
+  const get = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((p) => p.type === type)?.value ?? "";
+  // hour は 24:00 表記になりうるため 00 に正規化する。
+  const hour = get("hour") === "24" ? "00" : get("hour");
+  return `${get("year")}.${Number(get("month"))}.${Number(get("day"))} ${hour}:${get("minute")}`;
+}
+
 export interface ParsedOpinion {
   title: string;
   content: string;
