@@ -76,6 +76,102 @@ describe("billDraftSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  describe("バリデーションエラーメッセージの日本語化", () => {
+    /** 指定パスのissueメッセージを取り出すヘルパー */
+    function messageForPath(input: unknown, path: string): string | undefined {
+      const result = billDraftSchema.safeParse(input);
+      if (result.success) return undefined;
+      return result.error.issues.find((i) => i.path.join(".") === path)
+        ?.message;
+    }
+
+    it("nameが欠落した場合は日本語メッセージ", () => {
+      expect(messageForPath({}, "name")).toBe("議案名（name）は必須です");
+    });
+
+    it("nameが型違い（数値）の場合は日本語メッセージ", () => {
+      expect(messageForPath({ name: 123 }, "name")).toBe(
+        "議案名（name）は必須です"
+      );
+    });
+
+    it("nameが空文字の場合は日本語メッセージ", () => {
+      expect(messageForPath({ name: "" }, "name")).toBe(
+        "議案名（name）は必須です"
+      );
+    });
+
+    it("statusが不正な値の場合は日本語メッセージ", () => {
+      expect(
+        messageForPath({ name: "テスト", status: "unknown" }, "status")
+      ).toBe(
+        "ステータス（status）は preparing / introduced / in_originating_house / in_receiving_house / enacted / rejected のいずれかで入力してください"
+      );
+    });
+
+    it("originating_houseが不正な値の場合は日本語メッセージ", () => {
+      expect(
+        messageForPath(
+          { name: "テスト", originating_house: "XX" },
+          "originating_house"
+        )
+      ).toBe("提出院（originating_house）は HR または HC で入力してください");
+    });
+
+    it("submitted_dateが型違い（数値）の場合は日本語メッセージ", () => {
+      expect(
+        messageForPath(
+          { name: "テスト", submitted_date: 20260603 },
+          "submitted_date"
+        )
+      ).toBe("提出日（submitted_date）は文字列で入力してください");
+    });
+
+    it("submitted_dateが不正な暦日の場合は日本語メッセージ", () => {
+      expect(
+        messageForPath(
+          { name: "テスト", submitted_date: "2026-02-31" },
+          "submitted_date"
+        )
+      ).toBe(
+        "提出日（submitted_date）は YYYY-MM-DD 形式の実在する日付で入力してください"
+      );
+    });
+
+    it("billIdが不正なUUIDの場合は日本語メッセージ", () => {
+      expect(
+        messageForPath({ name: "テスト", billId: "not-a-uuid" }, "billId")
+      ).toBe("billId はUUID形式で入力してください");
+    });
+
+    it("is_featuredが型違いの場合は日本語メッセージ", () => {
+      expect(
+        messageForPath({ name: "テスト", is_featured: "yes" }, "is_featured")
+      ).toBe("is_featured は真偽値（true / false）で入力してください");
+    });
+
+    it("tagIdsが配列でない場合は日本語メッセージ", () => {
+      expect(messageForPath({ name: "テスト", tagIds: "x" }, "tagIds")).toBe(
+        "tagIds はUUIDの配列で入力してください"
+      );
+    });
+
+    it("tagIdsの要素が不正UUIDの場合は日本語メッセージ", () => {
+      expect(
+        messageForPath({ name: "テスト", tagIds: ["not-a-uuid"] }, "tagIds.0")
+      ).toBe("tagIds の各要素はUUID形式で入力してください");
+    });
+
+    it("contents.normal.titleが型違いの場合は日本語メッセージ", () => {
+      expect(
+        messageForPath(
+          { name: "テスト", contents: { normal: { title: 123 } } },
+          "contents.normal.title"
+        )
+      ).toBe("タイトル（title）は文字列で入力してください");
+    });
+  });
+
   it("tagIdsは任意でUUID配列", () => {
     const result = billDraftSchema.safeParse({
       name: "テスト",
