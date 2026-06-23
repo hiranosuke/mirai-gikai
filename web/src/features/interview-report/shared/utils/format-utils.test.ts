@@ -1,5 +1,40 @@
 import { describe, expect, it } from "vitest";
-import { formatRoleDescriptionLines, parseOpinions } from "./format-utils";
+import {
+  formatAnsweredAt,
+  formatRoleDescriptionLines,
+  parseOpinions,
+} from "./format-utils";
+
+describe("formatAnsweredAt", () => {
+  it("formats a UTC ISO string in Asia/Tokyo (+9h)", () => {
+    // 2026-06-22T00:30:00Z は JST で 2026-06-22 09:30
+    expect(formatAnsweredAt("2026-06-22T00:30:00Z")).toBe("2026.6.22 09:30");
+  });
+
+  it("rolls over to the next day across the JST date boundary", () => {
+    // 2026-06-22T15:00:00Z は JST で 2026-06-23 00:00
+    expect(formatAnsweredAt("2026-06-22T15:00:00Z")).toBe("2026.6.23 00:00");
+  });
+
+  it("zero-pads hour and minute but not month/day", () => {
+    // 2026-01-05T00:05:00Z は JST で 2026-01-05 09:05
+    expect(formatAnsweredAt("2026-01-05T00:05:00Z")).toBe("2026.1.5 09:05");
+  });
+
+  it("respects an explicit +09:00 offset (same instant as UTC+9)", () => {
+    expect(formatAnsweredAt("2026-06-22T09:30:00+09:00")).toBe(
+      "2026.6.22 09:30"
+    );
+  });
+
+  it("returns empty string for null", () => {
+    expect(formatAnsweredAt(null)).toBe("");
+  });
+
+  it("returns empty string for an invalid date string", () => {
+    expect(formatAnsweredAt("not-a-date")).toBe("");
+  });
+});
 
 describe("formatRoleDescriptionLines", () => {
   it("splits by newlines, trims, and adds bullet prefix", () => {
