@@ -26,20 +26,14 @@ import type {
 import { getBillStatusLabel } from "../../../shared/types";
 import { getBills } from "../../loaders/get-bills";
 
-function StatusBadge({
-  status,
-  originatingHouse,
-}: {
-  status: BillStatus;
-  originatingHouse: BillWithDietSession["originating_house"];
-}) {
+function StatusBadge({ status }: { status: BillStatus }) {
   const config = BILL_STATUS_CONFIG[status];
   const Icon = config.icon;
 
   return (
     <div className="inline-flex items-center gap-1.5 py-1 rounded-full text-sm font-bold">
       <Icon className="h-4 w-4" />
-      <span>{getBillStatusLabel(status, originatingHouse)}</span>
+      <span>{getBillStatusLabel(status)}</span>
     </div>
   );
 }
@@ -130,10 +124,7 @@ function BillRow({ bill }: { bill: BillWithDietSession }) {
         </div>
       </TableCell>
       <TableCell>
-        <StatusBadge
-          status={bill.status}
-          originatingHouse={bill.originating_house}
-        />
+        <StatusBadge status={bill.status} />
       </TableCell>
       <TableCell className="text-gray-600">
         {bill.submitted_date

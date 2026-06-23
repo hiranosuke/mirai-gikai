@@ -57,26 +57,18 @@ export const HOUSE_LABELS: Record<OriginatingHouse, string> = {
 };
 
 // ステータスを日本語ラベルに変換する関数
-export function getBillStatusLabel(
-  status: BillStatus,
-  originatingHouse?: OriginatingHouse | null
-): string {
+// さいたま市議会は一院制のため、発議院(HR/HC)による出し分けは行わず
+// 市議会の審議フローに沿ったラベルを返す。
+export function getBillStatusLabel(status: BillStatus): string {
   switch (status) {
     case "preparing":
       return "準備中";
     case "introduced":
       return "提出済み";
     case "in_originating_house":
-      if (originatingHouse) {
-        return `${HOUSE_LABELS[originatingHouse]}審議中`;
-      }
-      return "審議中";
+      return "委員会審査中";
     case "in_receiving_house":
-      if (originatingHouse) {
-        const receivingHouse = originatingHouse === "HR" ? "HC" : "HR";
-        return `${HOUSE_LABELS[receivingHouse]}審議中`;
-      }
-      return "審議中";
+      return "本会議審議中";
     case "enacted":
       return "成立";
     case "rejected":

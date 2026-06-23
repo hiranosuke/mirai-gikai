@@ -58,7 +58,6 @@ export async function BillDetailLayout({
           <div className="my-8">
             <BillStatusProgress
               status={bill.status}
-              originatingHouse={bill.originating_house}
               statusNote={bill.status_note}
             />
           </div>
