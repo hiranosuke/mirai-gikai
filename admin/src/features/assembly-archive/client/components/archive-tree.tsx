@@ -7,7 +7,7 @@ import {
   Folder,
   Loader2,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { fetchDocumentDetail } from "@/features/assembly-archive/server/actions/fetch-document-detail";
@@ -86,9 +86,12 @@ function DocumentItem({
   const [loading, setLoading] = useState(false);
   const [detail, setDetail] = useState<DocumentDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const loadingRef = useRef(false);
 
   async function loadDetail(): Promise<DocumentDetail | null> {
     if (detail !== null) return detail;
+    if (loadingRef.current) return null;
+    loadingRef.current = true;
     setLoading(true);
     setError(null);
     try {
@@ -108,6 +111,7 @@ function DocumentItem({
       return null;
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
   }
 
