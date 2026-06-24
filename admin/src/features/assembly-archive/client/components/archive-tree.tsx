@@ -9,14 +9,30 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { fetchDocumentDetail } from "@/features/assembly-archive/server/actions/fetch-document-detail";
 import { fetchTreeChildren } from "@/features/assembly-archive/server/actions/fetch-tree-children";
 import type {
   Cabinet,
+  DocumentDetail,
+  DocumentFile,
   DocumentNode,
+  SelectedFile,
   TreeChild,
 } from "@/features/assembly-archive/shared/types";
+import { deriveDocCheckState } from "@/features/assembly-archive/shared/utils/derive-doc-check-state";
 
-type ExpandableProps = {
+type SelectionProps = {
+  isFileSelected: (docid: number, fileId: number) => boolean;
+  onToggleFile: (file: SelectedFile) => void;
+  onToggleAllFiles: (
+    doc: DocumentNode,
+    files: DocumentFile[],
+    selectAll: boolean
+  ) => void;
+};
+
+type ExpandableProps = SelectionProps & {
   label: string;
   cabinetId: number;
   folderId: number;
@@ -25,25 +41,157 @@ type ExpandableProps = {
   onSelectDocument: (doc: DocumentNode) => void;
 };
 
-function DocumentRow({
+function FileRow({
+  doc,
+  file,
+  depth,
+  isFileSelected,
+  onToggleFile,
+}: {
+  doc: DocumentNode;
+  file: DocumentFile;
+  depth: number;
+} & Pick<SelectionProps, "isFileSelected" | "onToggleFile">) {
+  return (
+    <div
+      className="flex items-center gap-2 py-1"
+      style={{ paddingLeft: `${depth * 16 + 8}px` }}
+    >
+      <Checkbox
+        checked={isFileSelected(doc.docid, file.fileId)}
+        onCheckedChange={() =>
+          onToggleFile({ doc, fileId: file.fileId, fileName: file.fileName })
+        }
+        aria-label={`${file.fileName} を選択`}
+      />
+      <FileText className="size-4 shrink-0 text-muted-foreground" />
+      <span className="truncate text-left text-sm">{file.fileName}</span>
+    </div>
+  );
+}
+
+function DocumentItem({
   doc,
   depth,
   onSelectDocument,
+  isFileSelected,
+  onToggleFile,
+  onToggleAllFiles,
 }: {
   doc: DocumentNode;
   depth: number;
   onSelectDocument: (doc: DocumentNode) => void;
-}) {
+} & SelectionProps) {
+  const [expanded, setExpanded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [detail, setDetail] = useState<DocumentDetail | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function loadDetail(): Promise<DocumentDetail | null> {
+    if (detail !== null) return detail;
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await fetchDocumentDetail({
+        cabinetId: doc.cabinetId,
+        folderId: doc.folderId,
+        docid: doc.docid,
+      });
+      if ("error" in result) {
+        setError(result.error);
+        return null;
+      }
+      setDetail(result.data);
+      return result.data;
+    } catch {
+      setError("文書の取得に失敗しました");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function toggleExpand() {
+    if (expanded) {
+      setExpanded(false);
+      return;
+    }
+    setExpanded(true);
+    await loadDetail();
+  }
+
+  async function toggleAll() {
+    const data = detail ?? (await loadDetail());
+    if (!data) return;
+    setExpanded(true);
+    const selectedCount = data.files.filter((f) =>
+      isFileSelected(doc.docid, f.fileId)
+    ).length;
+    const selectAll = selectedCount < data.files.length;
+    onToggleAllFiles(doc, data.files, selectAll);
+  }
+
+  const checkState = detail
+    ? deriveDocCheckState(
+        detail.files.length,
+        detail.files.filter((f) => isFileSelected(doc.docid, f.fileId)).length
+      )
+    : false;
+
   return (
-    <Button
-      variant="ghost"
-      className="w-full justify-start gap-2 font-normal"
-      style={{ paddingLeft: `${depth * 16 + 8}px` }}
-      onClick={() => onSelectDocument(doc)}
-    >
-      <FileText className="size-4 shrink-0 text-muted-foreground" />
-      <span className="truncate text-left">{doc.title}</span>
-    </Button>
+    <div>
+      <div
+        className="flex items-center gap-2"
+        style={{ paddingLeft: `${depth * 16 + 8}px` }}
+      >
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-6 shrink-0"
+          onClick={toggleExpand}
+          aria-label={expanded ? "折りたたむ" : "展開する"}
+        >
+          {expanded ? (
+            <ChevronDown className="size-4" />
+          ) : (
+            <ChevronRight className="size-4" />
+          )}
+        </Button>
+        <Checkbox
+          checked={checkState}
+          onCheckedChange={toggleAll}
+          aria-label={`${doc.title} の全ファイルを選択`}
+        />
+        <Button
+          variant="ghost"
+          className="h-auto flex-1 justify-start gap-2 py-1 font-normal"
+          onClick={() => onSelectDocument(doc)}
+        >
+          <FileText className="size-4 shrink-0 text-muted-foreground" />
+          <span className="truncate text-left">{doc.title}</span>
+        </Button>
+        {loading && <Loader2 className="size-4 shrink-0 animate-spin" />}
+      </div>
+      {expanded && error && (
+        <p
+          className="py-1 text-sm text-destructive"
+          style={{ paddingLeft: `${(depth + 1) * 16 + 8}px` }}
+        >
+          {error}
+        </p>
+      )}
+      {expanded &&
+        detail?.files.map((file) => (
+          <FileRow
+            key={`file-${doc.docid}-${file.fileId}`}
+            doc={doc}
+            file={file}
+            depth={depth + 1}
+            isFileSelected={isFileSelected}
+            onToggleFile={onToggleFile}
+          />
+        ))}
+    </div>
   );
 }
 
@@ -54,6 +202,9 @@ function ExpandableFolder({
   move,
   depth,
   onSelectDocument,
+  isFileSelected,
+  onToggleFile,
+  onToggleAllFiles,
 }: ExpandableProps) {
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -119,13 +270,19 @@ function ExpandableFolder({
               move="down"
               depth={depth + 1}
               onSelectDocument={onSelectDocument}
+              isFileSelected={isFileSelected}
+              onToggleFile={onToggleFile}
+              onToggleAllFiles={onToggleAllFiles}
             />
           ) : (
-            <DocumentRow
+            <DocumentItem
               key={`d-${child.docid}`}
               doc={child}
               depth={depth + 1}
               onSelectDocument={onSelectDocument}
+              isFileSelected={isFileSelected}
+              onToggleFile={onToggleFile}
+              onToggleAllFiles={onToggleAllFiles}
             />
           )
         )}
@@ -136,10 +293,13 @@ function ExpandableFolder({
 export function ArchiveTree({
   cabinets,
   onSelectDocument,
+  isFileSelected,
+  onToggleFile,
+  onToggleAllFiles,
 }: {
   cabinets: Cabinet[];
   onSelectDocument: (doc: DocumentNode) => void;
-}) {
+} & SelectionProps) {
   return (
     <div className="rounded-lg border bg-white p-2">
       {cabinets.map((cabinet) => (
@@ -151,6 +311,9 @@ export function ArchiveTree({
           move="cabinet"
           depth={0}
           onSelectDocument={onSelectDocument}
+          isFileSelected={isFileSelected}
+          onToggleFile={onToggleFile}
+          onToggleAllFiles={onToggleAllFiles}
         />
       ))}
     </div>
