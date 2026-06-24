@@ -159,7 +159,9 @@ function DocumentItem({
         </Button>
         <Checkbox
           checked={checkState}
-          onCheckedChange={toggleAll}
+          onCheckedChange={() => {
+            void toggleAll();
+          }}
           aria-label={`${doc.title} の全ファイルを選択`}
         />
         <Button

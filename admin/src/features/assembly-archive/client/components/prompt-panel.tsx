@@ -18,6 +18,7 @@ export function PromptPanel({
   async function copyPrompt() {
     await navigator.clipboard.writeText(buildBillDraftPrompt(files));
     setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   return (
