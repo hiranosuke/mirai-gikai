@@ -44,3 +44,9 @@ export type ParsedDocView = {
   bodyText: string;
   files: DocumentFile[];
 };
+
+export type SelectedFile = {
+  doc: DocumentNode;
+  fileId: number;
+  fileName: string;
+};
