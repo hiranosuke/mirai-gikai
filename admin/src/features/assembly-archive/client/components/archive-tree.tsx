@@ -65,7 +65,9 @@ function FileRow({
         aria-label={`${file.fileName} を選択`}
       />
       <FileText className="size-4 shrink-0 text-muted-foreground" />
-      <span className="truncate text-left text-sm">{file.fileName}</span>
+      <span className="line-clamp-2 min-w-0 flex-1 text-left text-sm">
+        {file.fileName}
+      </span>
     </div>
   );
 }
@@ -170,11 +172,11 @@ function DocumentItem({
         />
         <Button
           variant="ghost"
-          className="h-auto flex-1 justify-start gap-2 py-1 font-normal"
+          className="h-auto min-w-0 flex-1 justify-start gap-2 py-1 font-normal whitespace-normal"
           onClick={() => onSelectDocument(doc)}
         >
           <FileText className="size-4 shrink-0 text-muted-foreground" />
-          <span className="truncate text-left">{doc.title}</span>
+          <span className="line-clamp-2 text-left">{doc.title}</span>
         </Button>
         {loading && <Loader2 className="size-4 shrink-0 animate-spin" />}
       </div>
@@ -244,7 +246,7 @@ function ExpandableFolder({
     <div>
       <Button
         variant="ghost"
-        className="w-full justify-start gap-2 font-normal"
+        className="h-auto w-full justify-start gap-2 py-1 font-normal whitespace-normal"
         style={{ paddingLeft: `${depth * 16 + 8}px` }}
         onClick={toggle}
       >
@@ -254,8 +256,8 @@ function ExpandableFolder({
           <ChevronRight className="size-4 shrink-0" />
         )}
         <Folder className="size-4 shrink-0 text-primary" />
-        <span className="truncate text-left">{label}</span>
-        {loading && <Loader2 className="size-4 animate-spin" />}
+        <span className="line-clamp-2 min-w-0 flex-1 text-left">{label}</span>
+        {loading && <Loader2 className="size-4 shrink-0 animate-spin" />}
       </Button>
       {expanded && error && (
         <p

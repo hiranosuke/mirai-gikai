@@ -72,12 +72,16 @@ export function ArchiveBrowser({ cabinets }: { cabinets: Cabinet[] }) {
         onToggleFile={onToggleFile}
         onToggleAllFiles={onToggleAllFiles}
       />
-      <DocumentDetailPanel document={selected} />
+      <div className="md:sticky md:top-4 md:self-start">
+        <DocumentDetailPanel document={selected} />
+      </div>
       {files.length > 0 && (
-        <PromptPanel
-          files={files}
-          onClear={() => setSelectedFiles(new Map())}
-        />
+        <div className="sticky bottom-4 z-20 md:col-span-2">
+          <PromptPanel
+            files={files}
+            onClear={() => setSelectedFiles(new Map())}
+          />
+        </div>
       )}
     </div>
   );

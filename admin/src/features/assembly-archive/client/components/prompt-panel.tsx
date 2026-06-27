@@ -22,7 +22,7 @@ export function PromptPanel({
   }
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border bg-white p-4 md:col-span-2">
+    <div className="flex items-center justify-between gap-4 rounded-lg border bg-white p-4 shadow-lg">
       <span className="text-sm font-medium">{files.length}ファイル選択中</span>
       <div className="flex items-center gap-2">
         <Button onClick={copyPrompt}>
