@@ -23,7 +23,9 @@ curl -s -c /tmp/dc_cookies.txt -X POST \
   -H "Content-Type: application/x-www-form-urlencoded" -d ""
 
 # b. PDFダウンロード（cabinet_id/folder_id/docid/fileid をプロンプトの値に置換）
-curl -s -b /tmp/dc_cookies.txt -X POST \
+#    file_view は 302 で実体URLへリダイレクトするため -L（追従）が必須。
+#    付けないと 302・0バイトで失敗する。
+curl -sL -b /tmp/dc_cookies.txt -X POST \
   https://www.discusscabinet.net/saitama/file_view \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "userid=&password=&cabinet_id=1&folder_id=123&docid=456&refer=&fileid=789&tmpid=&new_arrival=&order=&start=0&actions=return&filerefer=docview" \
