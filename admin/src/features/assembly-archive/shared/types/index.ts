@@ -50,3 +50,41 @@ export type SelectedFile = {
   fileId: number;
   fileName: string;
 };
+
+export type AssemblyFolderRow = {
+  folder_id: number;
+  cabinet_id: number;
+  parent_folder_id: number | null;
+  name: string;
+  path: string;
+};
+
+export type AssemblyDocumentRow = {
+  cabinet_id: number;
+  folder_id: number;
+  docid: number;
+  title: string;
+  doc_date: string | null;
+  raw_date: string;
+  folder_path: string;
+  session_label: string | null;
+};
+
+export type AssemblySearchInput = {
+  query?: string;
+  sessionLabel?: string;
+  cabinetId?: number;
+  dateFrom?: string;
+  dateTo?: string;
+  limit?: number;
+};
+
+export type AssemblySearchResult = {
+  title: string;
+  docDate: string | null;
+  folderPath: string;
+  sessionLabel: string | null;
+  cabinetId: number;
+  folderId: number;
+  docid: number;
+};
