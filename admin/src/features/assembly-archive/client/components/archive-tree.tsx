@@ -3,6 +3,7 @@
 import {
   ChevronDown,
   ChevronRight,
+  DownloadCloud,
   FileText,
   Folder,
   Loader2,
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { fetchDocumentDetail } from "@/features/assembly-archive/server/actions/fetch-document-detail";
 import { fetchTreeChildren } from "@/features/assembly-archive/server/actions/fetch-tree-children";
+import { importAssemblySubtree } from "@/features/assembly-archive/server/actions/import-assembly-subtree-action";
 import type {
   Cabinet,
   DocumentDetail,
@@ -38,6 +40,7 @@ type ExpandableProps = SelectionProps & {
   folderId: number;
   move: "cabinet" | "down";
   depth: number;
+  path: string;
   onSelectDocument: (doc: DocumentNode) => void;
 };
 
@@ -209,6 +212,7 @@ function ExpandableFolder({
   folderId,
   move,
   depth,
+  path,
   onSelectDocument,
   isFileSelected,
   onToggleFile,
@@ -218,6 +222,30 @@ function ExpandableFolder({
   const [loading, setLoading] = useState(false);
   const [children, setChildren] = useState<TreeChild[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [importMsg, setImportMsg] = useState<string | null>(null);
+
+  async function runImport() {
+    if (importing) return;
+    setImporting(true);
+    setImportMsg(null);
+    try {
+      const result = await importAssemblySubtree({
+        cabinetId,
+        folderId,
+        basePath: path,
+      });
+      setImportMsg(
+        "error" in result
+          ? result.error
+          : `取り込み完了: フォルダ${result.data.folderCount}件 / 文書${result.data.documentCount}件`
+      );
+    } catch {
+      setImportMsg("取り込みに失敗しました");
+    } finally {
+      setImporting(false);
+    }
+  }
 
   async function toggle() {
     if (expanded) {
@@ -244,27 +272,55 @@ function ExpandableFolder({
 
   return (
     <div>
-      <Button
-        variant="ghost"
-        className="h-auto w-full justify-start gap-2 py-1 font-normal whitespace-normal"
-        style={{ paddingLeft: `${depth * 16 + 8}px` }}
-        onClick={toggle}
-      >
-        {expanded ? (
-          <ChevronDown className="size-4 shrink-0" />
-        ) : (
-          <ChevronRight className="size-4 shrink-0" />
+      <div className="flex items-center">
+        <Button
+          variant="ghost"
+          className="h-auto min-w-0 flex-1 justify-start gap-2 py-1 font-normal whitespace-normal"
+          style={{ paddingLeft: `${depth * 16 + 8}px` }}
+          onClick={toggle}
+        >
+          {expanded ? (
+            <ChevronDown className="size-4 shrink-0" />
+          ) : (
+            <ChevronRight className="size-4 shrink-0" />
+          )}
+          <Folder className="size-4 shrink-0 text-primary" />
+          <span className="line-clamp-2 min-w-0 flex-1 text-left">{label}</span>
+          {loading && <Loader2 className="size-4 shrink-0 animate-spin" />}
+        </Button>
+        {move === "down" && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-6 shrink-0"
+            onClick={() => {
+              void runImport();
+            }}
+            disabled={importing}
+            aria-label={`${label} 配下をインデックスに取り込む`}
+          >
+            {importing ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <DownloadCloud className="size-4" />
+            )}
+          </Button>
         )}
-        <Folder className="size-4 shrink-0 text-primary" />
-        <span className="line-clamp-2 min-w-0 flex-1 text-left">{label}</span>
-        {loading && <Loader2 className="size-4 shrink-0 animate-spin" />}
-      </Button>
+      </div>
       {expanded && error && (
         <p
           className="py-1 text-sm text-destructive"
           style={{ paddingLeft: `${(depth + 1) * 16 + 8}px` }}
         >
           {error}
+        </p>
+      )}
+      {importMsg && (
+        <p
+          className="py-1 text-sm text-muted-foreground"
+          style={{ paddingLeft: `${(depth + 1) * 16 + 8}px` }}
+        >
+          {importMsg}
         </p>
       )}
       {expanded &&
@@ -277,6 +333,7 @@ function ExpandableFolder({
               folderId={child.folderId}
               move="down"
               depth={depth + 1}
+              path={`${path}${child.name}/`}
               onSelectDocument={onSelectDocument}
               isFileSelected={isFileSelected}
               onToggleFile={onToggleFile}
@@ -318,6 +375,7 @@ export function ArchiveTree({
           folderId={0}
           move="cabinet"
           depth={0}
+          path={`/${cabinet.name}/`}
           onSelectDocument={onSelectDocument}
           isFileSelected={isFileSelected}
           onToggleFile={onToggleFile}
