@@ -85,4 +85,10 @@ describe("assembly-document-repository", () => {
     // 例外が出ないことを確認
     expect(true).toBe(true);
   });
+
+  it("逆順の日付範囲はエラーを投げる", async () => {
+    await expect(
+      searchAssemblyDocuments({ dateFrom: "2026-06-30", dateTo: "2026-06-01" })
+    ).rejects.toThrow("dateFrom は dateTo 以前");
+  });
 });

@@ -39,6 +39,10 @@ export async function upsertAssemblyDocuments(
 export async function searchAssemblyDocuments(
   input: AssemblySearchInput
 ): Promise<AssemblySearchResult[]> {
+  // 逆順の日付範囲は黙って空結果にせず、入力ミスとして明示的に弾く。
+  if (input.dateFrom && input.dateTo && input.dateFrom > input.dateTo) {
+    throw new Error("dateFrom は dateTo 以前の日付を指定してください");
+  }
   const supabase = createAdminClient();
   let query = supabase
     .from("assembly_documents")
