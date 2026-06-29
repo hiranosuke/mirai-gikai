@@ -17,7 +17,7 @@ export async function upsertAssemblyFolders(
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("assembly_folders")
-    .upsert(rows, { onConflict: "folder_id" });
+    .upsert(rows, { onConflict: "cabinet_id,folder_id" });
   if (error) {
     throw new Error(`Failed to upsert assembly folders: ${error.message}`);
   }

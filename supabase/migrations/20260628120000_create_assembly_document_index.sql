@@ -2,13 +2,16 @@
 -- MCP/AI からの検索性を上げる。PDF本文は保存しない（メタデータのみ）。
 -- 設計: docs/superpowers/specs/2026-06-28-assembly-document-index-design.md
 
+-- folder_id は cabinet をまたいで一意とは限らないため、cabinet_id との複合主キーにする
+-- （assembly_documents の UNIQUE(cabinet_id, docid) と同じ方針）。
 CREATE TABLE assembly_folders (
-  folder_id        BIGINT PRIMARY KEY,                         -- DiscussCabinet のフォルダID
+  folder_id        BIGINT NOT NULL,                            -- DiscussCabinet のフォルダID
   cabinet_id       BIGINT NOT NULL,                            -- 1=本会議 / 2=委員会
   parent_folder_id BIGINT,                                     -- ルート取込点は NULL
   name             TEXT NOT NULL,
   path             TEXT NOT NULL,                              -- 例: /本会議/令和８年/６月定例会/審議結果/
-  imported_at      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+  imported_at      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (cabinet_id, folder_id)
 );
 
 CREATE TABLE assembly_documents (
