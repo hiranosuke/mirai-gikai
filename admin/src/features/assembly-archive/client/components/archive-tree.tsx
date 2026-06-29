@@ -224,24 +224,31 @@ function ExpandableFolder({
   const [error, setError] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
   const [importMsg, setImportMsg] = useState<string | null>(null);
+  const [importError, setImportError] = useState(false);
 
   async function runImport() {
     if (importing) return;
     setImporting(true);
     setImportMsg(null);
+    setImportError(false);
     try {
       const result = await importAssemblySubtree({
         cabinetId,
         folderId,
         basePath: path,
       });
-      setImportMsg(
-        "error" in result
-          ? result.error
-          : `取り込み完了: フォルダ${result.data.folderCount}件 / 文書${result.data.documentCount}件`
-      );
+      if ("error" in result) {
+        setImportMsg(result.error);
+        setImportError(true);
+      } else {
+        setImportMsg(
+          `取り込み完了: フォルダ${result.data.folderCount}件 / 文書${result.data.documentCount}件`
+        );
+        setImportError(false);
+      }
     } catch {
       setImportMsg("取り込みに失敗しました");
+      setImportError(true);
     } finally {
       setImporting(false);
     }
@@ -317,7 +324,7 @@ function ExpandableFolder({
       )}
       {importMsg && (
         <p
-          className="py-1 text-sm text-muted-foreground"
+          className={`py-1 text-sm ${importError ? "text-destructive" : "text-muted-foreground"}`}
           style={{ paddingLeft: `${(depth + 1) * 16 + 8}px` }}
         >
           {importMsg}

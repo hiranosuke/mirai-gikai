@@ -15,4 +15,14 @@ describe("parseDocDate", () => {
     expect(parseDocDate("令和8年6月12日")).toBeNull();
     expect(parseDocDate("2026-06-12")).toBeNull();
   });
+
+  it("月が範囲外なら null", () => {
+    expect(parseDocDate("2026/13/01")).toBeNull();
+    expect(parseDocDate("2026/00/10")).toBeNull();
+  });
+
+  it("日が範囲外なら null", () => {
+    expect(parseDocDate("2026/06/32")).toBeNull();
+    expect(parseDocDate("2026/06/00")).toBeNull();
+  });
 });
