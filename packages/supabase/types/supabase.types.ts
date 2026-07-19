@@ -34,6 +34,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      assembly_documents: {
+        Row: {
+          cabinet_id: number
+          doc_date: string | null
+          docid: number
+          folder_id: number
+          folder_path: string
+          id: string
+          imported_at: string
+          raw_date: string | null
+          session_label: string | null
+          title: string
+        }
+        Insert: {
+          cabinet_id: number
+          doc_date?: string | null
+          docid: number
+          folder_id: number
+          folder_path: string
+          id?: string
+          imported_at?: string
+          raw_date?: string | null
+          session_label?: string | null
+          title: string
+        }
+        Update: {
+          cabinet_id?: number
+          doc_date?: string | null
+          docid?: number
+          folder_id?: number
+          folder_path?: string
+          id?: string
+          imported_at?: string
+          raw_date?: string | null
+          session_label?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      assembly_folders: {
+        Row: {
+          cabinet_id: number
+          folder_id: number
+          imported_at: string
+          name: string
+          parent_folder_id: number | null
+          path: string
+        }
+        Insert: {
+          cabinet_id: number
+          folder_id: number
+          imported_at?: string
+          name: string
+          parent_folder_id?: number | null
+          path: string
+        }
+        Update: {
+          cabinet_id?: number
+          folder_id?: number
+          imported_at?: string
+          name?: string
+          parent_folder_id?: number | null
+          path?: string
+        }
+        Relationships: []
+      }
       bill_contents: {
         Row: {
           bill_id: string
