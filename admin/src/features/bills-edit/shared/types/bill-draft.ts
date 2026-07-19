@@ -53,9 +53,9 @@ const billDraftMetaSchema = z.object({
     .optional(),
   diet_session_id: z
     .string({
-      error: "国会回次ID（diet_session_id）は文字列で入力してください",
+      error: "会期ID（diet_session_id）は文字列で入力してください",
     })
-    .uuid("国会回次ID（diet_session_id）はUUID形式で入力してください")
+    .uuid("会期ID（diet_session_id）はUUID形式で入力してください")
     .nullable()
     .optional(),
   knowledge_source: z
