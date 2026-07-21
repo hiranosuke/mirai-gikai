@@ -46,6 +46,9 @@ cd ../mirai-gikai-<branch-name> && pnpm install --frozen-lockfile
 
 両方を通過したら、ユーザーに確認せずそのままコミット → push → PR作成まで一気に進めること（`gh pr create`）。
 
+### PRマージ方式（merge commit・squash禁止）
+PRのマージは `gh pr merge --merge` を使用し、**squashマージ（`--squash`）は使わないこと**。個別コミットの履歴をブランチの流れとしてグラフ上に残すため。squashすると元ブランチの粒度の細かいコミットがメインラインの祖先関係から切り離され、ブランチ削除時に実質失われる（GitHub上のPRのCommitsタブでは見えるが、ローカルの `git log --graph` では追えなくなる）。
+
 ### UI変更時のスクリーンショット必須
 PR作成後、変更差分にUI関連ファイル（`web/src/`, `admin/src/` 配下の `.tsx`, `.css` 等）が含まれる場合は、必ず `/pr-screenshot` スキルを実行すること。スキルが自動でdevサーバー起動→スクリーンショット撮影→R2アップロード→PR本文更新まで行う。
 
